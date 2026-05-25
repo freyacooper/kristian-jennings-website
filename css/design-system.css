@@ -223,33 +223,18 @@ h4 { font-size: 15px; letter-spacing: -0.01em; line-height: 1.25; }
   border-bottom: 1px solid var(--hairline);
 }
 .nav-brand {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
   text-decoration: none;
   color: var(--ink);
 }
-.nav-brand .mark {
-  width: 26px;
-  height: 26px;
-  border-radius: 7px;
-  background: var(--ink);
-  color: var(--cream);
-  font-family: "Sora";
-  font-weight: 700;
-  font-size: 11.5px;
-  letter-spacing: -0.02em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+.nav-logo {
+  height: 34px;
+  width: auto;
+  display: block;
 }
-.nav-name {
-  font-family: "Sora";
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: -0.01em;
-  line-height: 1;
+@media (min-width: 980px) {
+  .nav-logo { height: 42px; }
 }
 
 .nav-links {
@@ -562,29 +547,13 @@ h4 { font-size: 15px; letter-spacing: -0.01em; line-height: 1.25; }
 .footer-brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
   text-decoration: none;
   color: var(--ink);
 }
-.footer-mark {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  background: var(--ink);
-  color: var(--cream);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "Sora";
-  font-weight: 700;
-  font-size: 12.5px;
-  letter-spacing: -0.02em;
-}
-.footer-brand-name {
-  font-family: "Sora";
-  font-weight: 700;
-  font-size: 15px;
-  letter-spacing: -0.01em;
+.footer-logo {
+  height: 52px;
+  width: auto;
+  display: block;
 }
 
 .footer-social {
