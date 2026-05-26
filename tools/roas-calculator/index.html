@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Sound Effect Bank — Kristian Jennings</title>
+  <title>ROAS Calculator — Kristian Jennings</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A free library of sound effects for ecommerce content creators and brands to use in their video ads. Listen, pick and download.">
+  <meta name="description" content="Calculate your Return on Ad Spend in seconds. Punch in revenue and ad spend, see exactly how profitable each campaign is.">
   <link rel="icon" type="image/webp" href="/assets/images/new-favicon.webp">
   <link rel="stylesheet" href="/css/design-system.css">
-  <link rel="stylesheet" href="/css/sound-effect-bank.css">
+  <link rel="stylesheet" href="/css/roas-calculator.css">
 </head>
 <body>
 
@@ -131,21 +131,138 @@
        ============================================================ -->
   <section class="page-header">
     <nav class="breadcrumb" aria-label="Breadcrumb">
-      <span class="breadcrumb-link">Resources</span>
+      <span class="breadcrumb-link">Tools</span>
       <span class="breadcrumb-sep" aria-hidden="true">/</span>
-      <span class="breadcrumb-link is-current" aria-current="page">Sound Effect Bank</span>
+      <span class="breadcrumb-link is-current" aria-current="page">ROAS Calculator</span>
     </nav>
-    <h1 class="page-title">Sound Effect Bank</h1>
-    <p class="lead">A free library of sound effects for ecommerce content creators and brands to use in their video ads. Listen, pick what fits and drop it straight into your edit.</p>
+    <h1 class="page-title">ROAS Calculator</h1>
+    <p class="lead">Punch in your revenue and ad spend to get your Return on Ad Spend at a glance. Quickly see if your campaigns are profitable and by how much.</p>
   </section>
 
   <!-- ============================================================
-       AUDIO BANK
+       CALCULATOR
        ============================================================ -->
-  <section class="audio-bank" data-audio-bank>
-    <!-- Rows are rendered by js/sound-effect-bank.js from the MANIFEST. -->
-  </section>
+  <section class="roas-calc" data-roas-calc>
+    <div class="roas-calc-grid">
 
+      <!-- INPUTS (left) -->
+      <form class="roas-form" data-roas-form autocomplete="off">
+        <div class="roas-currency-row">
+          <label class="sr-only" for="roas-currency">Currency</label>
+          <select id="roas-currency" class="roas-currency" data-roas-currency>
+            <option value="EUR" data-symbol="€" selected>€  Euro</option>
+            <option value="USD" data-symbol="$">$  Dollar</option>
+            <option value="GBP" data-symbol="£">£  Pound</option>
+          </select>
+        </div>
+
+        <div class="roas-fields">
+          <div class="roas-field">
+            <label for="roas-price">Selling Price / Average Cart</label>
+            <div class="roas-field-input">
+              <span class="prefix" data-currency-prefix>€</span>
+              <input type="number" id="roas-price" data-roas-input="price"
+                     inputmode="decimal" min="0" step="0.01" value="80">
+            </div>
+          </div>
+
+          <div class="roas-field">
+            <label for="roas-vat">Applicable VAT</label>
+            <div class="roas-field-input">
+              <span class="prefix">%</span>
+              <input type="number" id="roas-vat" data-roas-input="vat"
+                     inputmode="decimal" min="0" max="100" step="0.1" value="20">
+            </div>
+          </div>
+
+          <div class="roas-field">
+            <label for="roas-cogs">Product Purchase Price</label>
+            <div class="roas-field-input">
+              <span class="prefix" data-currency-prefix>€</span>
+              <input type="number" id="roas-cogs" data-roas-input="cogs"
+                     inputmode="decimal" min="0" step="0.01" value="4">
+            </div>
+          </div>
+
+          <div class="roas-field">
+            <label for="roas-shipping">Shipping Costs</label>
+            <div class="roas-field-input">
+              <span class="prefix" data-currency-prefix>€</span>
+              <input type="number" id="roas-shipping" data-roas-input="shipping"
+                     inputmode="decimal" min="0" step="0.01" value="6">
+            </div>
+          </div>
+
+          <div class="roas-field">
+            <label for="roas-fees">Shopify + Banking Fees</label>
+            <div class="roas-field-input">
+              <span class="prefix">%</span>
+              <input type="number" id="roas-fees" data-roas-input="fees"
+                     inputmode="decimal" min="0" max="100" step="0.1" value="2.5">
+            </div>
+          </div>
+
+          <div class="roas-field">
+            <label for="roas-other">Other Miscellaneous Costs</label>
+            <div class="roas-field-input">
+              <span class="prefix" data-currency-prefix>€</span>
+              <input type="number" id="roas-other" data-roas-input="other"
+                     inputmode="decimal" min="0" step="0.01" value="0">
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <!-- RESULTS (right) -->
+      <div class="roas-results">
+
+        <div class="roas-result">
+          <span class="roas-result-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 17l6-6 4 4 7-8" />
+              <path d="M14 7h6v6" />
+            </svg>
+            ROAS Break-Even
+          </span>
+          <div class="roas-result-value">
+            <span data-roas-output="roasBreakEven">1.46</span>
+          </div>
+          <dl class="roas-result-breakdown">
+            <dt>10% margin</dt><dd data-roas-output="roas10">1.71</dd>
+            <dt>20% margin</dt><dd data-roas-output="roas20">2.07</dd>
+            <dt>30% margin</dt><dd data-roas-output="roas30">2.61</dd>
+          </dl>
+        </div>
+
+        <div class="roas-result">
+          <span class="roas-result-label">CPA Break-Even</span>
+          <div class="roas-result-value">
+            <span class="currency" data-currency-prefix>€</span><span data-roas-output="cpaBreakEven">54.67</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Always-visible explanation: pale teal info box spanning the
+         full calculator width. 3-col on desktop, 1-col on mobile. -->
+    <aside class="roas-explanation" aria-label="Glossary">
+      <div class="roas-explanation-item">
+        <strong>ROAS</strong>
+        Return On Ad Spend: ratio between your revenue and your advertising spend.
+      </div>
+      <div class="roas-explanation-item">
+        <strong>Break-even</strong>
+        Equilibrium point where you neither lose nor make money.
+      </div>
+      <div class="roas-explanation-item">
+        <strong>CPA</strong>
+        Cost Per Acquisition: how much you can spend per customer to reach the break-even point.
+      </div>
+    </aside>
+  </section>
 
   <!-- ============================================================
        FOOTER
@@ -202,6 +319,6 @@
   </footer>
 
   <script src="/js/nav.js"></script>
-  <script src="/js/sound-effect-bank.js"></script>
+  <script src="/js/roas-calculator.js"></script>
 </body>
 </html>

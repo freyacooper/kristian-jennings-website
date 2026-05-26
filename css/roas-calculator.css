@@ -1,0 +1,300 @@
+/* ============================================================
+   ROAS Calculator — page-specific styles
+   Form on the left (glass card with paired inputs); results stack
+   on the right with brand-teal gradient cards.
+   ============================================================ */
+
+.roas-calc {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 20px 64px;
+}
+@media (min-width: 700px) { .roas-calc { padding: 0 48px 80px; } }
+@media (min-width: 980px) { .roas-calc { padding: 0 72px 96px; } }
+
+.roas-calc-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) {
+  .roas-calc-grid {
+    grid-template-columns: minmax(0, 1.35fr) minmax(280px, 1fr);
+    gap: 22px;
+    align-items: stretch;
+  }
+}
+
+/* ---------- form (left) ---------- */
+.roas-form {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 24px;
+  padding: 20px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 20px 50px -28px rgba(1, 31, 47, 0.22),
+    0 8px 24px -18px rgba(1, 31, 47, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+@media (min-width: 700px) { .roas-form { padding: 24px; } }
+
+.roas-currency-row {
+  display: flex;
+  justify-content: flex-end;
+}
+.roas-currency {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: rgba(255, 255, 255, 0.75);
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23011f2f' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 12px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 8px 36px 8px 16px;
+  font-family: "Geist";
+  font-weight: 500;
+  font-size: 13.5px;
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    border-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.roas-currency:hover {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-color: rgba(1, 31, 47, 0.18);
+}
+.roas-currency:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(0, 208, 211, 0.18);
+}
+
+.roas-fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 520px) {
+  .roas-fields { grid-template-columns: 1fr 1fr; gap: 16px 18px; }
+}
+
+.roas-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.roas-field > label {
+  font-family: "Geist";
+  font-weight: 500;
+  font-size: 12.5px;
+  color: var(--fg-2);
+  letter-spacing: -0.005em;
+}
+.roas-field-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  padding: 11px 14px;
+  transition:
+    border-color 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    background 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.roas-field-input:hover {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(1, 31, 47, 0.18);
+}
+.roas-field-input:focus-within {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(0, 208, 211, 0.18);
+}
+.roas-field-input .prefix {
+  font-family: "Geist";
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--fg-3);
+  flex-shrink: 0;
+  width: 14px;
+  text-align: center;
+}
+.roas-field-input input {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  outline: none;
+  font-family: "Geist";
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+}
+/* Hide spin buttons but keep type=number's numeric keypad on mobile */
+.roas-field-input input[type="number"]::-webkit-inner-spin-button,
+.roas-field-input input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.roas-field-input input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ---------- results (right) ---------- */
+.roas-results {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.roas-result {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  /* Layered background: dark wash overlay on top of the gradient
+     image (subtler image, more text contrast). The teal-900 below
+     is a fallback if the image fails to load. */
+  background-color: var(--teal-900);
+  background-image:
+    linear-gradient(rgba(1, 31, 47, 0.18), rgba(1, 31, 47, 0.18)),
+    url("/assets/images/dark-gradient.png");
+  background-size: auto, cover;
+  background-repeat: no-repeat, no-repeat;
+  color: var(--cream);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 20px 50px -28px rgba(0, 208, 211, 0.5),
+    0 8px 24px -18px rgba(1, 31, 47, 0.18);
+}
+/* Per-card padding (top is roomier; bottom is tighter) and varied
+   image framing so the two cards don't look identical. */
+.roas-result:nth-child(1) {
+  padding: 32px 26px;
+  background-position: 0 0, 30% 30%;
+}
+.roas-result:nth-child(2) {
+  padding: 18px 26px;
+  background-position: 0 0, 70% 70%;
+}
+
+/* Desktop: stretch right column to match form height. ROAS card
+   (more content) gets ~1.6x the flexible height of CPA. */
+@media (min-width: 900px) {
+  .roas-results { height: 100%; }
+  .roas-result {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .roas-result:nth-child(1) { flex: 1.6; }
+  .roas-result:nth-child(2) { flex: 1; }
+}
+
+.roas-result-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Geist";
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 252, 248, 0.95);
+  position: relative;
+  z-index: 1;
+}
+.roas-result-label svg { width: 14px; height: 14px; }
+
+.roas-result-value {
+  font-family: "Sora";
+  font-weight: 700;
+  font-size: 56px;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--cream);
+  margin-top: 12px;
+  position: relative;
+  z-index: 1;
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  align-items: baseline;
+}
+.roas-result-value .currency {
+  font-size: 38px;
+  font-weight: 500;
+  margin-right: 2px;
+  opacity: 0.95;
+}
+
+.roas-result-breakdown {
+  margin: 18px 0 0;
+  padding: 0;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 12px;
+  font-family: "Geist";
+  font-size: 13px;
+}
+.roas-result-breakdown dt {
+  margin: 0;
+  color: rgba(255, 252, 248, 0.78);
+}
+.roas-result-breakdown dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--cream);
+}
+
+/* ---------- explanation (full-width pale-teal info box) ---------- */
+.roas-explanation {
+  margin-top: 48px;
+  background: var(--mist);
+  border: 1px solid rgba(0, 208, 211, 0.22);
+  border-radius: 20px;
+  padding: 22px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 700px) {
+  .roas-explanation {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    padding: 24px 28px;
+  }
+}
+@media (min-width: 900px) {
+  .roas-explanation { margin-top: 60px; }
+}
+.roas-explanation-item {
+  font-family: "Geist";
+  font-size: 13.5px;
+  color: var(--fg-2);
+  line-height: 1.55;
+}
+.roas-explanation-item strong {
+  font-family: "Sora";
+  font-weight: 700;
+  font-size: 14.5px;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  display: block;
+  margin-bottom: 4px;
+}

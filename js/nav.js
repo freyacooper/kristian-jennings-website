@@ -62,7 +62,10 @@
   var SUBS = {
     tools: {
       label: "Tools",
-      links: [{ name: "iMessage Screenshot Maker", href: "#" }]
+      links: [
+        { name: "iMessage Screenshot Maker", href: "/tools/imessage-screenshot-maker/" },
+        { name: "ROAS Calculator", href: "/tools/roas-calculator/" }
+      ]
     },
     resources: {
       label: "Resources",
