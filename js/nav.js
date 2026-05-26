@@ -69,7 +69,10 @@
     },
     resources: {
       label: "Resources",
-      links: [{ name: "Sound Effect Bank", href: "/resources/sound-effect-bank/" }]
+      links: [
+        { name: "Sound Effect Bank", href: "/resources/sound-effect-bank/" },
+        { name: "Icon Library", href: "/resources/icon-library/" }
+      ]
     }
   };
 

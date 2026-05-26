@@ -247,6 +247,7 @@
 .tv-sfx  { background: linear-gradient(155deg, #d7f4f2 0%, #b8e8e6 60%, #cfe8df 100%); }
 .tv-imsg { background: linear-gradient(170deg, #eaf2f0 0%, #d7f4f2 50%, #f2ece9 100%); }
 .tv-roas { background: linear-gradient(155deg, #d7f4f2 0%, #e3eeed 55%, #f2ece9 100%); }
+.tv-icon-library { background: linear-gradient(165deg, #d7f4f2 0%, #e8f0ee 55%, #f2ece9 100%); }
 
 .tv-glow {
   position: absolute;
@@ -483,6 +484,42 @@
 .roas-bars i:nth-child(4) { background: var(--teal-700); }
 .roas-bars i:nth-child(5) { background: var(--teal); }
 .roas-bars i:nth-child(6) { background: var(--teal); }
+
+/* ─── Icon Library visual ─── */
+.icon-lib-card {
+  position: relative;
+  z-index: 1;
+  width: 82%;
+  max-width: 230px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 8px 20px -8px rgba(1, 31, 47, 0.18);
+}
+.icon-lib-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.icon-lib-tile {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(215, 244, 242, 0.45);
+  border: 1px solid rgba(0, 208, 211, 0.12);
+  border-radius: 10px;
+  color: var(--teal-700);
+}
+.icon-lib-tile svg {
+  width: 56%;
+  height: 56%;
+}
 
 /* Card body */
 .tool-body {
