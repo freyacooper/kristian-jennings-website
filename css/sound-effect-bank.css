@@ -1,0 +1,342 @@
+/* ============================================================
+   Sound Effect Bank — page-specific styles
+   Audio rows organised by category subheadings.
+   ============================================================ */
+
+.audio-bank {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 16px 20px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+}
+@media (min-width: 700px) {
+  .audio-bank { padding: 24px 48px 80px; gap: 56px; }
+}
+@media (min-width: 980px) {
+  .audio-bank { padding: 32px 72px 96px; }
+}
+
+/* ---------- category section ---------- */
+.audio-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.audio-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 4px 10px;
+  border-bottom: 1px solid var(--hairline);
+}
+.audio-section-head h2 {
+  font-family: "Sora";
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin: 0;
+}
+.audio-section-head .count {
+  font-family: "Geist";
+  font-size: 12px;
+  color: var(--fg-3);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+@media (min-width: 700px) {
+  .audio-section-head h2 { font-size: 24px; }
+  .audio-section-head .count { font-size: 13px; }
+}
+
+/* ---------- audio list + row ---------- */
+.audio-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Mobile layout (default ≤320px): play | name+duration stack | tiny wave | download.
+   The entire row is the play trigger (clicks bubble to a row-level
+   handler in JS; the download link's click is excluded there). */
+.audio-row {
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: auto 1fr 56px auto;
+  grid-template-areas:
+    "play name     wave download"
+    "play duration wave download";
+  column-gap: 10px;
+  row-gap: 2px;
+  padding: 8px 10px 8px 8px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 6px 18px -10px rgba(1, 31, 47, 0.18),
+    0 2px 6px -4px rgba(1, 31, 47, 0.06);
+  transition:
+    background 240ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 240ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.audio-row:hover {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(255, 255, 255, 0.95);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 12px 28px -14px rgba(1, 31, 47, 0.2),
+    0 4px 10px -6px rgba(1, 31, 47, 0.08);
+}
+.audio-row.is-playing {
+  background: rgba(215, 244, 242, 0.62);
+  border-color: rgba(0, 208, 211, 0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 12px 32px -14px rgba(0, 208, 211, 0.35),
+    0 4px 10px -6px rgba(1, 31, 47, 0.06);
+}
+
+/* play button */
+.audio-play {
+  grid-area: play;
+  align-self: center;
+  appearance: none;
+  border: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--cream);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 180ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 280ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 180ms;
+}
+.audio-play svg { width: 12px; height: 12px; }
+.audio-play .icon-play  { margin-left: 1px; }
+.audio-play .icon-pause { display: none; }
+/* Teal glow on row hover. Sits on the play button rather than the
+   whole pill so the focal point reads as "click to play". */
+.audio-row:hover .audio-play,
+.audio-play:focus-visible {
+  transform: scale(1.05);
+  box-shadow:
+    0 0 0 5px rgba(0, 208, 211, 0.18),
+    0 6px 18px -2px rgba(0, 208, 211, 0.45);
+}
+.audio-row:active .audio-play { transform: scale(0.98); }
+.audio-row.is-playing .audio-play {
+  box-shadow: 0 0 0 3px rgba(0, 208, 211, 0.35);
+}
+.audio-row.is-playing:hover .audio-play {
+  box-shadow:
+    0 0 0 5px rgba(0, 208, 211, 0.28),
+    0 6px 18px -2px rgba(0, 208, 211, 0.45);
+}
+.audio-row.is-playing .audio-play .icon-play  { display: none; }
+.audio-row.is-playing .audio-play .icon-pause { display: inline-flex; }
+
+/* name + duration */
+.audio-name {
+  grid-area: name;
+  align-self: end;
+  font-family: "Geist";
+  font-weight: 500;
+  font-size: 13.5px;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.audio-duration {
+  grid-area: duration;
+  align-self: start;
+  font-family: "Geist";
+  font-size: 11.5px;
+  color: var(--fg-3);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+/* waveform (hidden on mobile, visible on tablet+).
+   Two stacked layers of identical bars: .audio-wave-base shows dim
+   colour; .audio-wave-fill sits on top in bright teal and is revealed
+   by a clip-path driven by --progress (0–100%). That gives smooth,
+   sub-bar playback animation as the CSS var updates each rAF frame. */
+.audio-wave {
+  display: block;
+  grid-area: wave;
+  position: relative;
+  align-self: center;
+  width: 100%;
+  height: 18px;
+  --progress: 0%;
+}
+.audio-wave-base,
+.audio-wave-fill {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.audio-wave-fill {
+  clip-path: inset(0 calc(100% - var(--progress)) 0 0);
+  -webkit-clip-path: inset(0 calc(100% - var(--progress)) 0 0);
+  pointer-events: none;
+}
+.audio-wave-base i,
+.audio-wave-fill i {
+  width: 2px;
+  border-radius: 1px;
+}
+/* Progressive bar density. We render 96 bars per row but only reveal
+   a subset at narrow widths so the wave doesn't look crowded. Each
+   wider breakpoint reveals more bars (additive via nth-child). */
+.audio-wave-base i,
+.audio-wave-fill i {
+  display: none;
+}
+.audio-wave-base i:nth-child(8n+1),
+.audio-wave-fill i:nth-child(8n+1) {
+  display: block;
+}
+.audio-wave-base i {
+  background: rgba(1, 31, 47, 0.28);
+  transition: background 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.audio-row.is-playing .audio-wave-base i {
+  background: rgba(0, 157, 159, 0.32);
+}
+.audio-wave-fill i {
+  background: var(--teal-700);
+}
+
+/* download */
+.audio-download {
+  grid-area: download;
+  align-self: center;
+  appearance: none;
+  border: 1px solid var(--soft);
+  background: transparent;
+  color: var(--fg-2);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition:
+    border-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    background 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.audio-download:hover {
+  border-color: rgba(0, 157, 159, 0.5);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--accent-deep);
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 0 5px rgba(0, 208, 211, 0.18),
+    0 6px 18px -2px rgba(0, 208, 211, 0.45);
+}
+.audio-row.is-playing .audio-download {
+  border-color: rgba(0, 157, 159, 0.35);
+  color: var(--accent-deep);
+}
+.audio-download:active { transform: translateY(0); }
+.audio-download svg { width: 16px; height: 16px; }
+
+
+/* Tablet+ layout: single row with waveform horizontally centred.
+   The wave column is auto (content-sized), flanked by two equal-width
+   minmax(0, 1fr) flex columns (name on left, duration on right). Equal
+   side columns guarantee the wave sits in the geometric centre of the
+   pill regardless of how long the name is. Name truncates with ellipsis
+   if it would overflow its flex space. */
+/* Mid-mobile (≥400px): wider wave + more padding around the row.
+   Bar density jumps from 12 → 24 visible. */
+@media (min-width: 400px) {
+  .audio-row {
+    grid-template-columns: auto 1fr 100px auto;
+    column-gap: 12px;
+    padding: 10px 12px 10px 10px;
+  }
+  .audio-wave { height: 22px; }
+  .audio-wave-base i:nth-child(4n+1),
+  .audio-wave-fill i:nth-child(4n+1) {
+    display: block;
+  }
+}
+@media (min-width: 520px) {
+  .audio-row { grid-template-columns: auto 1fr 140px auto; }
+}
+
+/* Tablet+ layout (≥700px): single-line row with a fixed-width name
+   column so every row's wave starts at the same x position (waves
+   align across the list) and "Wait a minute who are you" truncates
+   to "Wait a minute who…". The wave column fills the rest.
+   Bar density jumps to 48 visible. */
+@media (min-width: 700px) {
+  .audio-row {
+    grid-template-columns: auto 140px minmax(240px, 1fr) auto auto;
+    grid-template-areas: "play name wave duration download";
+    column-gap: 18px;
+    row-gap: 0;
+    padding: 10px 16px 10px 10px;
+  }
+  .audio-name {
+    align-self: center;
+    font-size: 14px;
+    justify-self: start;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .audio-duration {
+    align-self: center;
+    font-size: 12.5px;
+  }
+  .audio-wave { height: 26px; }
+  .audio-wave-base i:nth-child(2n+1),
+  .audio-wave-fill i:nth-child(2n+1) {
+    display: block;
+  }
+}
+
+/* ≥850px: enough room for a dense, full-resolution waveform.
+   All 96 bars become visible. */
+@media (min-width: 850px) {
+  .audio-wave-base i,
+  .audio-wave-fill i {
+    display: block;
+  }
+}
+
+@media (min-width: 980px) {
+  .audio-row { padding: 12px 20px 12px 12px; column-gap: 22px; }
+  .audio-name { font-size: 14.5px; }
+  .audio-wave { height: 28px; }
+}

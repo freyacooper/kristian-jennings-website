@@ -66,7 +66,7 @@
     },
     resources: {
       label: "Resources",
-      links: [{ name: "Sound Effect Bank", href: "#" }]
+      links: [{ name: "Sound Effect Bank", href: "/resources/sound-effect-bank/" }]
     }
   };
 
