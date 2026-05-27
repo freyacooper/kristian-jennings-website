@@ -777,3 +777,81 @@
 @media (min-width: 980px) {
   .newsletter { padding: 48px 72px 72px; }
 }
+
+/* ============================================================
+   Kit (ConvertKit) — brand-matched styling for ck.5.js hooks.
+   We don't include Kit's bundled CSS; only their script. These
+   rules style what their JS injects/animates: the spinner inside
+   the submit button, the error alert, and the success alert that
+   replaces error/empty state after subscribe.
+   ============================================================ */
+
+/* Spinner — three dots scaling on a loop inside the submit button.
+   Hidden by default; Kit sets [data-active] on the button while a
+   request is in flight, at which point we reveal + animate. */
+.formkit-submit .formkit-spinner {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  pointer-events: none;
+}
+.formkit-submit { position: relative; }
+.formkit-submit .formkit-spinner > span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.85;
+  display: block;
+  animation: kit-bounce 1.4s ease-in-out infinite both;
+}
+.formkit-submit .formkit-spinner > span:nth-child(1) { animation-delay: -0.32s; }
+.formkit-submit .formkit-spinner > span:nth-child(2) { animation-delay: -0.16s; }
+.formkit-submit[data-active] .formkit-spinner { display: inline-flex; }
+.formkit-submit[data-active] > svg,
+.formkit-submit[data-active] .newsletter-cta-label { opacity: 0; }
+
+@keyframes kit-bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40%           { transform: scale(1); }
+}
+
+/* Alerts — Kit injects message text into these <ul>/<div>. Style them
+   inside our dark ink newsletter card so they read against it. */
+.newsletter-alert {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+  font-family: "Geist";
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--cream);
+}
+.newsletter-alert:empty { display: none; }
+.newsletter-alert li { padding: 12px 14px; border-radius: 12px; }
+.newsletter-alert.formkit-alert-error li {
+  background: rgba(255, 96, 96, 0.14);
+  border: 1px solid rgba(255, 96, 96, 0.32);
+  color: #ffd2cf;
+}
+/* Kit replaces the form with an inline success div on subscribe; we
+   target the global selector so it shows in the same card. */
+.formkit-form .formkit-alert-success,
+.newsletter-card .formkit-alert.formkit-alert-success {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0, 208, 211, 0.12);
+  border: 1px solid rgba(0, 208, 211, 0.3);
+  border-radius: 14px;
+  padding: 16px 18px;
+  color: var(--cream);
+  font-family: "Geist";
+  font-size: 14.5px;
+  line-height: 1.5;
+  list-style: none;
+  margin: 0;
+}
