@@ -1,0 +1,492 @@
+/* ============================================================
+   Icon Library — grid of icon cards with live edit controls
+   and a glassmorphism download bar
+   ============================================================ */
+
+.icon-lib {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 20px 120px;
+}
+@media (min-width: 700px) { .icon-lib { padding: 0 48px 140px; } }
+@media (min-width: 980px) { .icon-lib { padding: 0 72px 160px; } }
+
+/* ---------- edit controls ---------- */
+.icon-controls {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 20px;
+  padding: 16px 18px;
+  margin-bottom: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 28px;
+  align-items: flex-start;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 8px 24px -18px rgba(1, 31, 47, 0.12);
+}
+@media (min-width: 700px) {
+  .icon-controls {
+    padding: 18px 22px;
+    margin-bottom: 22px;
+    align-items: center;
+  }
+}
+
+.ctrl-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ctrl-label {
+  font-family: "Geist";
+  font-weight: 500;
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+
+/* Segmented stroke pills */
+.ctrl-pills {
+  display: inline-flex;
+  background: rgba(1, 31, 47, 0.06);
+  border: 1px solid rgba(1, 31, 47, 0.08);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+}
+.ctrl-pills button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-family: "Geist";
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--fg-2);
+  padding: 6px 11px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ctrl-pills button:hover { color: var(--ink); }
+.ctrl-pills button.is-active {
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(1, 31, 47, 0.1), 0 0 0 1px rgba(1, 31, 47, 0.04);
+}
+
+/* Colour swatches */
+.ctrl-swatches {
+  display: inline-flex;
+  gap: 8px;
+  padding: 2px;
+}
+.swatch {
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0), inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+  transition:
+    transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.swatch:hover { transform: scale(1.08); }
+.swatch.is-active {
+  transform: scale(1.05);
+  box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--accent), 0 4px 10px rgba(1, 31, 47, 0.15);
+}
+
+/* Custom-colour swatch: a circle that opens the native colour picker.
+   The native <input type="color"> sits inside the label and inherits
+   the rounded shape. Background of the label = current selected hex,
+   updated via JS so the swatch always reflects the current value. */
+.swatch-custom {
+  background: conic-gradient(from 90deg at 50% 50%, #ff595e, #ffca3a, #8ac926, #1982c4, #6a4c93, #ff595e);
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+.swatch-custom input[type="color"] {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  background: transparent;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0; /* hide the native button visual; label is the swatch */
+}
+/* White inner circle so the rainbow ring frames the dropper icon */
+.swatch-custom::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  background: var(--paper);
+  pointer-events: none;
+}
+/* Dropper / eye-dropper icon centred over the white circle */
+.swatch-custom::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23011f2f' stroke-width='1.85' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m13 6 5 5-9 9H4v-5z'/%3E%3Cpath d='m15 4 5 5-2 2-5-5z'/%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 15px 15px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Background-row groups the toggle and the conditional colour picker */
+.ctrl-bg-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.ctrl-bg-color {
+  transition:
+    opacity 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.ctrl-bg-color.is-hidden {
+  opacity: 0;
+  transform: translateX(-6px) scale(0.85);
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* iOS-style toggle */
+.ctrl-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+.ctrl-switch input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.ctrl-switch-track {
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 22px;
+  background: rgba(1, 31, 47, 0.18);
+  border-radius: 999px;
+  transition: background 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ctrl-switch-track::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: var(--paper);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(1, 31, 47, 0.25), 0 0 0 1px rgba(1, 31, 47, 0.04);
+  transition: transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.ctrl-switch input:checked + .ctrl-switch-track {
+  background: var(--accent);
+}
+.ctrl-switch input:checked + .ctrl-switch-track::before {
+  transform: translateX(16px);
+}
+.ctrl-switch input:focus-visible + .ctrl-switch-track {
+  box-shadow: 0 0 0 4px rgba(0, 208, 211, 0.2);
+}
+.ctrl-switch-state {
+  font-family: "Geist";
+  font-weight: 500;
+  font-size: 12.5px;
+  color: var(--fg-2);
+  min-width: 24px;
+}
+
+/* ---------- icon grid ---------- */
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+@media (min-width: 480px) { .icon-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 700px) { .icon-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; } }
+@media (min-width: 900px) { .icon-grid { grid-template-columns: repeat(5, 1fr); } }
+@media (min-width: 1100px) { .icon-grid { grid-template-columns: repeat(6, 1fr); } }
+
+.icon-card {
+  appearance: none;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 18px;
+  padding: 18px 10px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: center;
+  transition:
+    transform 240ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 240ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 280ms cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 6px 18px -14px rgba(1, 31, 47, 0.12);
+}
+.icon-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 208, 211, 0.32);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 10px 24px -16px rgba(1, 31, 47, 0.2),
+    0 2px 8px -4px rgba(0, 208, 211, 0.1);
+}
+.icon-card:active {
+  transform: translateY(0);
+  transition-duration: 120ms;
+}
+.icon-card.is-active {
+  border-color: var(--accent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 0 0 4px rgba(0, 208, 211, 0.2),
+    0 10px 24px -16px rgba(1, 31, 47, 0.2);
+}
+
+.icon-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  background: transparent;
+  transition:
+    background 280ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-radius 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.icon-tile.has-bg {
+  background: var(--mist);
+  border-radius: 50%;
+}
+.icon-tile svg {
+  width: 32px;
+  height: 32px;
+  transition:
+    color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    stroke-width 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    width 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    height 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.icon-tile.has-bg svg {
+  width: 28px;
+  height: 28px;
+}
+
+.icon-name {
+  font-family: "Geist";
+  font-size: 11.5px;
+  color: var(--fg-2);
+  letter-spacing: -0.005em;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   DOWNLOAD BAR — fixed bottom, glassmorphism, slide animation
+   ============================================================ */
+.icon-bar {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 100;
+  background: rgba(255, 252, 248, 0.72);
+  backdrop-filter: blur(36px) saturate(200%);
+  -webkit-backdrop-filter: blur(36px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 22px;
+  padding: 12px 14px 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 24px 60px -22px rgba(1, 31, 47, 0.3),
+    0 10px 24px -12px rgba(1, 31, 47, 0.18);
+  transform: translateY(calc(100% + 48px));
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s 380ms;
+}
+.icon-bar.is-open {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+  transition:
+    transform 460ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s;
+}
+/* While hidden, also disable interaction */
+.icon-bar:not(.is-open) { pointer-events: none; }
+
+@media (min-width: 700px) {
+  .icon-bar {
+    bottom: 24px;
+    left: 50%;
+    right: auto;
+    max-width: 760px;
+    width: calc(100% - 48px);
+    padding: 14px 16px;
+    transform: translate(-50%, calc(100% + 56px));
+  }
+  .icon-bar.is-open {
+    transform: translate(-50%, 0);
+  }
+}
+
+/* Preview wrapper: delegates the background visual to the inner
+   .icon-tile so it shows the user's current background settings. */
+.icon-bar-preview {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+}
+.icon-bar-preview .icon-tile {
+  width: 48px;
+  height: 48px;
+  /* no background when has-bg isn't set so the bar's glass shows through */
+}
+/* When background is on, the preview tile becomes a true circle to
+   match the downloaded PNG/SVG output. */
+.icon-bar-preview .icon-tile.has-bg {
+  border-radius: 50%;
+}
+.icon-bar-preview .icon-tile svg { width: 28px; height: 28px; }
+.icon-bar-preview .icon-tile.has-bg svg { width: 26px; height: 26px; }
+
+.icon-bar-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.icon-bar-name {
+  font-family: "Sora";
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.icon-bar-hint {
+  font-family: "Geist";
+  font-size: 11.5px;
+  color: var(--fg-3);
+  letter-spacing: -0.005em;
+}
+
+.icon-bar-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.icon-bar-actions button {
+  appearance: none;
+  border: 1px solid rgba(0, 157, 159, 0.32);
+  background: rgba(255, 255, 255, 0.65);
+  color: var(--accent-deep);
+  font-family: "Geist";
+  font-weight: 500;
+  font-size: 12.5px;
+  padding: 8px 13px;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 240ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 200ms;
+}
+.icon-bar-actions button:hover {
+  background: var(--mist);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px -2px rgba(0, 208, 211, 0.3);
+}
+
+.icon-bar-close {
+  appearance: none;
+  border: 0;
+  background: rgba(1, 31, 47, 0.05);
+  color: var(--fg-2);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 180ms, color 180ms;
+}
+.icon-bar-close:hover {
+  background: rgba(1, 31, 47, 0.1);
+  color: var(--ink);
+}
+.icon-bar-close svg { width: 16px; height: 16px; }
+
+/* On narrow mobile, hide explicit close (clicking the active card
+   already toggles the bar shut) and stack the info above actions */
+@media (max-width: 519px) {
+  .icon-bar-close { display: none; }
+  .icon-bar {
+    flex-wrap: wrap;
+    padding: 12px 14px;
+  }
+  .icon-bar-actions {
+    flex-basis: 100%;
+    justify-content: stretch;
+  }
+  .icon-bar-actions button { flex: 1; padding: 9px 6px; font-size: 12px; }
+}

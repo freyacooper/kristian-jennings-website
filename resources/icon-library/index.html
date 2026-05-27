@@ -5,8 +5,12 @@
   <title>Icon Library — Kristian Jennings</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="A growing library of clean, on-brand SVG icons for ecommerce content creators and brands. Pick what fits, drop straight into your designs.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/images/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
   <link rel="icon" type="image/webp" href="/assets/images/new-favicon.webp">
   <link rel="stylesheet" href="/css/design-system.css">
+  <link rel="stylesheet" href="/css/icon-library.css?v=3">
 </head>
 <body>
 
@@ -157,6 +161,73 @@
   </section>
 
   <!-- ============================================================
+       ICON LIBRARY
+       ============================================================ -->
+  <section class="icon-lib">
+
+    <!-- Edit controls: stroke width / colour / background toggle -->
+    <div class="icon-controls" data-controls>
+      <div class="ctrl-group">
+        <span class="ctrl-label">Stroke</span>
+        <div class="ctrl-pills" role="radiogroup" aria-label="Stroke width">
+          <button type="button" role="radio" data-stroke="1"   aria-checked="false">1px</button>
+          <button type="button" role="radio" data-stroke="1.5" aria-checked="false">1.5px</button>
+          <button type="button" role="radio" data-stroke="2"   aria-checked="true" class="is-active">2px</button>
+          <button type="button" role="radio" data-stroke="2.5" aria-checked="false">2.5px</button>
+          <button type="button" role="radio" data-stroke="3"   aria-checked="false">3px</button>
+        </div>
+      </div>
+
+      <div class="ctrl-group">
+        <span class="ctrl-label">Colour</span>
+        <label class="swatch swatch-custom" aria-label="Choose colour">
+          <input type="color" data-color-picker value="#011f2f">
+        </label>
+      </div>
+
+      <div class="ctrl-group">
+        <span class="ctrl-label">Background</span>
+        <div class="ctrl-bg-row">
+          <label class="ctrl-switch">
+            <input type="checkbox" data-bg-toggle>
+            <span class="ctrl-switch-track" aria-hidden="true"></span>
+            <span class="ctrl-switch-state" data-bg-state>Off</span>
+          </label>
+          <label class="swatch swatch-custom ctrl-bg-color is-hidden" data-bg-picker-wrap aria-label="Background colour">
+            <input type="color" data-bg-picker value="#d7f4f2">
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid of icon cards (populated by js/icon-library.js) -->
+    <div class="icon-grid" data-icon-grid role="list" aria-label="Icon library"></div>
+
+  </section>
+
+  <!-- Download bar (fixed bottom, slides up on icon click) -->
+  <div class="icon-bar" data-download-bar role="region" aria-label="Download icon" hidden>
+    <div class="icon-bar-preview" aria-hidden="true">
+      <span class="icon-tile" data-bar-tile></span>
+    </div>
+    <div class="icon-bar-info">
+      <span class="icon-bar-name" data-bar-name>icon</span>
+      <span class="icon-bar-hint">Download as</span>
+    </div>
+    <div class="icon-bar-actions">
+      <button type="button" data-download="svg">SVG</button>
+      <button type="button" data-download="png-128">PNG · 128</button>
+      <button type="button" data-download="png-512">PNG · 512</button>
+      <button type="button" data-download="png-1024">PNG · 1024</button>
+    </div>
+    <button type="button" class="icon-bar-close" data-bar-close aria-label="Close download bar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 6l12 12M18 6L6 18"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- ============================================================
        FOOTER
        ============================================================ -->
   <footer class="footer">
@@ -212,5 +283,6 @@
   </footer>
 
   <script src="/js/nav.js"></script>
+  <script src="/js/icon-library.js?v=3"></script>
 </body>
 </html>
