@@ -17,6 +17,17 @@
   var outputs = root.querySelectorAll("[data-roas-output]");
   var currencySelect = root.querySelector("[data-roas-currency]");
   var currencyPrefixes = root.querySelectorAll("[data-currency-prefix]");
+  var toggleBtns = root.querySelectorAll("[data-target-mode]");
+  var marginField = root.querySelector('[data-target-field="margin"]');
+  var roasField = root.querySelector('[data-target-field="roas"]');
+  var contextEl = root.querySelector("[data-target-context]");
+
+  // Default Target CPA basis. Reads from whichever toggle button is
+  // currently marked active in the markup so the JS state matches DOM.
+  var targetMode = "margin";
+  Array.prototype.forEach.call(toggleBtns, function (b) {
+    if (b.classList.contains("is-active")) targetMode = b.dataset.targetMode;
+  });
 
   /* ---------- math ---------- */
   function compute(state) {
@@ -31,12 +42,25 @@
       var denom = cpa - margin * price;
       return denom > 0 ? price / denom : 0;
     }
+
+    // Target CPA: how much we can spend per acquisition and still hit
+    // the user's desired margin / ROAS.
+    //   margin mode → targetCpa = break-even CPA − (margin × price)
+    //   roas mode   → targetCpa = price ÷ desired ROAS
+    var targetCpa;
+    if (state.targetMode === "roas") {
+      targetCpa = state.targetRoas > 0 ? price / state.targetRoas : 0;
+    } else {
+      targetCpa = cpa - (state.targetMargin / 100) * price;
+    }
+
     return {
       cpaBreakEven: cpa,
       roasBreakEven: roas,
       roas10: marginRoas(0.10),
       roas20: marginRoas(0.20),
-      roas30: marginRoas(0.30)
+      roas30: marginRoas(0.30),
+      targetCpa: targetCpa
     };
   }
 
@@ -54,7 +78,7 @@
 
   /* ---------- DOM bindings ---------- */
   function readState() {
-    var state = {};
+    var state = { targetMode: targetMode };
     Array.prototype.forEach.call(inputs, function (input) {
       var key = input.dataset.roasInput;
       var n = parseFloat(input.value);
@@ -63,16 +87,33 @@
     return state;
   }
 
+  // Outputs whose key is a currency amount (vs. a ratio) — format dp
+  // and "—" handling differs.
+  var AMOUNT_KEYS = { cpaBreakEven: 1, targetCpa: 1 };
+
   function writeOutputs(result) {
     Array.prototype.forEach.call(outputs, function (el) {
       var key = el.dataset.roasOutput;
-      if (key === "cpaBreakEven") el.textContent = fmtAmount(result[key]);
+      if (AMOUNT_KEYS[key]) el.textContent = fmtAmount(result[key]);
       else el.textContent = fmtRatio(result[key]);
     });
   }
 
+  function updateContext(state) {
+    if (!contextEl) return;
+    if (state.targetMode === "roas") {
+      var r = state.targetRoas;
+      contextEl.textContent = "Based on a " + (isFinite(r) ? r : 0) + "× ROAS.";
+    } else {
+      var m = state.targetMargin;
+      contextEl.textContent = "Based on a " + (isFinite(m) ? m : 0) + "% profit margin.";
+    }
+  }
+
   function recalc() {
-    writeOutputs(compute(readState()));
+    var state = readState();
+    writeOutputs(compute(state));
+    updateContext(state);
   }
 
   /* ---------- currency switching ---------- */
@@ -87,11 +128,27 @@
     applyCurrencySymbol(symbol);
   }
 
+  /* ---------- target-mode toggle ---------- */
+  function setTargetMode(mode) {
+    targetMode = mode;
+    Array.prototype.forEach.call(toggleBtns, function (b) {
+      var active = b.dataset.targetMode === mode;
+      b.classList.toggle("is-active", active);
+      b.setAttribute("aria-selected", active ? "true" : "false");
+    });
+    if (marginField) marginField.hidden = (mode !== "margin");
+    if (roasField)   roasField.hidden   = (mode !== "roas");
+    recalc();
+  }
+
   /* ---------- wire up ---------- */
   Array.prototype.forEach.call(inputs, function (input) {
     input.addEventListener("input", recalc);
   });
   if (currencySelect) currencySelect.addEventListener("change", onCurrencyChange);
+  Array.prototype.forEach.call(toggleBtns, function (b) {
+    b.addEventListener("click", function () { setTargetMode(b.dataset.targetMode); });
+  });
 
   // Initial paint (recalc + sync currency)
   if (currencySelect) onCurrencyChange();

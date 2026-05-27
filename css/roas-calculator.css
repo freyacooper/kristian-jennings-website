@@ -153,6 +153,74 @@
   -moz-appearance: textfield;
 }
 
+/* ---------- divider + target section (inside the form) ----------
+   On desktop the form stretches to match the right column's height;
+   margin-top:auto on the divider pushes the target section to the
+   bottom so empty space collects between the existing inputs and
+   the new section rather than at the very bottom. */
+.roas-form-divider {
+  border: 0;
+  height: 1px;
+  background: var(--hairline);
+  margin: 4px 0 0;
+}
+@media (min-width: 900px) {
+  .roas-form-divider { margin-top: auto; }
+}
+
+.roas-target {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.roas-target-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+.roas-target-title {
+  font-family: "Sora";
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* Segmented toggle (iOS-style) — two pill buttons sharing a track */
+.roas-toggle {
+  display: inline-flex;
+  background: rgba(1, 31, 47, 0.06);
+  border: 1px solid rgba(1, 31, 47, 0.08);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+}
+.roas-toggle-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-family: "Geist";
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: -0.005em;
+  color: var(--fg-2);
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.roas-toggle-btn:hover { color: var(--ink); }
+.roas-toggle-btn.is-active {
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(1, 31, 47, 0.1), 0 0 0 1px rgba(1, 31, 47, 0.04);
+}
+
 /* ---------- results (right) ---------- */
 .roas-results {
   display: flex;
@@ -179,8 +247,9 @@
     0 20px 50px -28px rgba(0, 208, 211, 0.5),
     0 8px 24px -18px rgba(1, 31, 47, 0.18);
 }
-/* Per-card padding (top is roomier; bottom is tighter) and varied
-   image framing so the two cards don't look identical. */
+/* Per-card padding and varied image framing so stacked cards don't
+   look identical. ROAS (most content) gets the roomiest padding;
+   Break-Even CPA is the tightest; Target CPA sits in between. */
 .roas-result:nth-child(1) {
   padding: 32px 26px;
   background-position: 0 0, 30% 30%;
@@ -189,9 +258,13 @@
   padding: 18px 26px;
   background-position: 0 0, 70% 70%;
 }
+.roas-result:nth-child(3) {
+  padding: 24px 26px;
+  background-position: 0 0, 50% 90%;
+}
 
 /* Desktop: stretch right column to match form height. ROAS card
-   (more content) gets ~1.6x the flexible height of CPA. */
+   (most content) gets the largest share; CPA the smallest. */
 @media (min-width: 900px) {
   .roas-results { height: 100%; }
   .roas-result {
@@ -199,8 +272,9 @@
     flex-direction: column;
     justify-content: center;
   }
-  .roas-result:nth-child(1) { flex: 1.6; }
+  .roas-result:nth-child(1) { flex: 1.5; }
   .roas-result:nth-child(2) { flex: 1; }
+  .roas-result:nth-child(3) { flex: 1.2; }
 }
 
 .roas-result-label {
@@ -261,6 +335,15 @@
   font-weight: 600;
   color: var(--cream);
 }
+.roas-result-sub {
+  position: relative;
+  z-index: 1;
+  margin: 12px 0 0;
+  font-family: "Geist";
+  font-size: 12.5px;
+  color: rgba(255, 252, 248, 0.78);
+  letter-spacing: -0.005em;
+}
 
 /* ---------- explanation (full-width pale-teal info box) ---------- */
 .roas-explanation {
@@ -297,4 +380,219 @@
   letter-spacing: -0.01em;
   display: block;
   margin-bottom: 4px;
+}
+
+/* ============================================================
+   KRISTIAN'S METHOD — explainers with mini diagrams
+   ============================================================ */
+.roas-method {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 20px 64px;
+}
+@media (min-width: 700px) { .roas-method { padding: 0 48px 80px; } }
+@media (min-width: 980px) { .roas-method { padding: 0 72px 96px; } }
+
+.roas-method-head {
+  margin: 40px 0 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+.roas-method-title {
+  font-family: "Sora";
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: -0.022em;
+  line-height: 1.12;
+  color: var(--ink);
+  margin: 0;
+}
+.roas-method-sub {
+  font-family: "Geist";
+  font-size: 14px;
+  color: var(--fg-2);
+  margin: 0;
+  max-width: 56ch;
+}
+@media (min-width: 700px) {
+  .roas-method-head { margin: 56px 0 28px; }
+  .roas-method-title { font-size: 30px; }
+}
+@media (min-width: 980px) {
+  .roas-method-head { margin: 68px 0 32px; }
+  .roas-method-title { font-size: 34px; }
+}
+
+.roas-method-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 700px) {
+  .roas-method-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+}
+
+/* Match the .roas-form glass card style exactly */
+.roas-method-card {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 24px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 20px 50px -28px rgba(1, 31, 47, 0.22),
+    0 8px 24px -18px rgba(1, 31, 47, 0.1);
+}
+@media (min-width: 700px) {
+  .roas-method-card { padding: 24px; }
+}
+.roas-method-card h3 {
+  font-family: "Sora";
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0;
+}
+.roas-method-card p {
+  font-family: "Geist";
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--fg-2);
+  margin: 0;
+}
+
+.roas-method-diagram {
+  height: 112px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  background: rgba(215, 244, 242, 0.55);
+  border: 1px solid rgba(0, 208, 211, 0.2);
+  border-radius: 14px;
+}
+
+/* ─── Diagram 1: formula pills ─── */
+.roas-method-diagram--formula {
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.formula-pill {
+  font-family: "Geist";
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.01em;
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--accent-deep);
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 208, 211, 0.25);
+}
+.formula-pill.is-result {
+  background: var(--accent-deep);
+  color: var(--cream);
+  border-color: var(--accent-deep);
+  font-weight: 600;
+}
+.formula-op {
+  font-family: "Sora";
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--fg-3);
+}
+
+/* ─── Diagram 2: cost breakdown bar ─── */
+.roas-method-diagram--breakdown {
+  flex-direction: column;
+  padding: 18px 14px;
+}
+.breakdown-bar {
+  display: flex;
+  width: 100%;
+  height: 36px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.breakdown-seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.breakdown-seg i {
+  font-style: normal;
+  font-family: "Geist";
+  font-weight: 500;
+  font-size: 9.5px;
+  letter-spacing: 0.01em;
+  color: rgba(255, 252, 248, 0.95);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 4px;
+}
+.s-vat      { background: var(--teal-900); }
+.s-cogs     { background: #027d7d; }
+.s-shipping { background: var(--teal-700); }
+.s-fees     { background: rgba(0, 157, 159, 0.55); }
+.s-budget   { background: var(--mist); }
+.s-budget i { color: var(--accent-deep); font-weight: 600; }
+
+/* ─── Diagram 3: margin × ROAS bars ─── */
+.roas-method-diagram--margin {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 14px;
+  padding: 6px 18px 8px;
+}
+.margin-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.margin-value {
+  font-family: "Sora";
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--accent-deep);
+  letter-spacing: -0.01em;
+}
+.margin-bar {
+  width: 100%;
+  flex: 1;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(0, 208, 211, 0.15);
+  border-radius: 5px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+.margin-bar i {
+  display: block;
+  width: 100%;
+  background: linear-gradient(to top, var(--teal-900), var(--teal-700));
+  border-radius: 3px 3px 0 0;
+}
+.margin-label {
+  font-family: "Geist";
+  font-weight: 500;
+  font-size: 10.5px;
+  color: var(--fg-3);
+  letter-spacing: 0.01em;
 }

@@ -7,7 +7,7 @@
   <meta name="description" content="Calculate your Return on Ad Spend in seconds. Punch in revenue and ad spend, see exactly how profitable each campaign is.">
   <link rel="icon" type="image/webp" href="/assets/images/new-favicon.webp">
   <link rel="stylesheet" href="/css/design-system.css">
-  <link rel="stylesheet" href="/css/roas-calculator.css">
+  <link rel="stylesheet" href="/css/roas-calculator.css?v=4">
 </head>
 <body>
 
@@ -168,8 +168,8 @@
         <div class="roas-currency-row">
           <label class="sr-only" for="roas-currency">Currency</label>
           <select id="roas-currency" class="roas-currency" data-roas-currency>
-            <option value="EUR" data-symbol="€" selected>€  Euro</option>
-            <option value="USD" data-symbol="$">$  Dollar</option>
+            <option value="USD" data-symbol="$" selected>$  Dollar</option>
+            <option value="EUR" data-symbol="€">€  Euro</option>
             <option value="GBP" data-symbol="£">£  Pound</option>
           </select>
         </div>
@@ -178,7 +178,7 @@
           <div class="roas-field">
             <label for="roas-price">Selling Price / Average Cart</label>
             <div class="roas-field-input">
-              <span class="prefix" data-currency-prefix>€</span>
+              <span class="prefix" data-currency-prefix>$</span>
               <input type="number" id="roas-price" data-roas-input="price"
                      inputmode="decimal" min="0" step="0.01" value="80">
             </div>
@@ -196,7 +196,7 @@
           <div class="roas-field">
             <label for="roas-cogs">Product Purchase Price</label>
             <div class="roas-field-input">
-              <span class="prefix" data-currency-prefix>€</span>
+              <span class="prefix" data-currency-prefix>$</span>
               <input type="number" id="roas-cogs" data-roas-input="cogs"
                      inputmode="decimal" min="0" step="0.01" value="4">
             </div>
@@ -205,7 +205,7 @@
           <div class="roas-field">
             <label for="roas-shipping">Shipping Costs</label>
             <div class="roas-field-input">
-              <span class="prefix" data-currency-prefix>€</span>
+              <span class="prefix" data-currency-prefix>$</span>
               <input type="number" id="roas-shipping" data-roas-input="shipping"
                      inputmode="decimal" min="0" step="0.01" value="6">
             </div>
@@ -223,9 +223,43 @@
           <div class="roas-field">
             <label for="roas-other">Other Miscellaneous Costs</label>
             <div class="roas-field-input">
-              <span class="prefix" data-currency-prefix>€</span>
+              <span class="prefix" data-currency-prefix>$</span>
               <input type="number" id="roas-other" data-roas-input="other"
                      inputmode="decimal" min="0" step="0.01" value="0">
+            </div>
+          </div>
+        </div>
+
+        <!-- divider separates break-even inputs above from target CPA below -->
+        <hr class="roas-form-divider" />
+
+        <!-- Target CPA: toggle between margin / ROAS-driven targets -->
+        <div class="roas-target">
+          <div class="roas-target-head">
+            <h3 class="roas-target-title">Target CPA</h3>
+            <div class="roas-toggle" role="tablist" aria-label="Target basis">
+              <button type="button" role="tab" class="roas-toggle-btn is-active"
+                      data-target-mode="margin" aria-selected="true">Margin</button>
+              <button type="button" role="tab" class="roas-toggle-btn"
+                      data-target-mode="roas" aria-selected="false">ROAS</button>
+            </div>
+          </div>
+
+          <div class="roas-field" data-target-field="margin">
+            <label for="roas-target-margin">Desired profit margin</label>
+            <div class="roas-field-input">
+              <span class="prefix">%</span>
+              <input type="number" id="roas-target-margin" data-roas-input="targetMargin"
+                     inputmode="decimal" min="0" max="100" step="0.5" value="20">
+            </div>
+          </div>
+
+          <div class="roas-field" data-target-field="roas" hidden>
+            <label for="roas-target-roas">Desired ROAS</label>
+            <div class="roas-field-input">
+              <span class="prefix">×</span>
+              <input type="number" id="roas-target-roas" data-roas-input="targetRoas"
+                     inputmode="decimal" min="0" step="0.1" value="2.5">
             </div>
           </div>
         </div>
@@ -241,7 +275,7 @@
               <path d="M3 17l6-6 4 4 7-8" />
               <path d="M14 7h6v6" />
             </svg>
-            ROAS Break-Even
+            Break-Even ROAS
           </span>
           <div class="roas-result-value">
             <span data-roas-output="roasBreakEven">1.46</span>
@@ -254,10 +288,36 @@
         </div>
 
         <div class="roas-result">
-          <span class="roas-result-label">CPA Break-Even</span>
+          <span class="roas-result-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 5v15" />
+              <path d="M8.5 20h7" />
+              <path d="M4 7h16" />
+              <path d="M4 7l-2.5 5h5z" />
+              <path d="M20 7l-2.5 5h5z" />
+            </svg>
+            Break-Even CPA
+          </span>
           <div class="roas-result-value">
-            <span class="currency" data-currency-prefix>€</span><span data-roas-output="cpaBreakEven">54.67</span>
+            <span class="currency" data-currency-prefix>$</span><span data-roas-output="cpaBreakEven">54.67</span>
           </div>
+        </div>
+
+        <div class="roas-result">
+          <span class="roas-result-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" />
+              <circle cx="12" cy="12" r="5.5" />
+              <circle cx="12" cy="12" r="2" fill="currentColor" />
+            </svg>
+            Target CPA
+          </span>
+          <div class="roas-result-value">
+            <span class="currency" data-currency-prefix>$</span><span data-roas-output="targetCpa">38.67</span>
+          </div>
+          <p class="roas-result-sub" data-target-context>Based on a 20% profit margin.</p>
         </div>
 
       </div>
@@ -280,6 +340,68 @@
         Cost Per Acquisition: how much you can spend per customer to reach the break-even point.
       </div>
     </aside>
+  </section>
+
+  <!-- ============================================================
+       KRISTIAN'S METHOD — short explainers with mini diagrams
+       ============================================================ -->
+  <section class="roas-method" aria-labelledby="method-title">
+    <header class="roas-method-head">
+      <h2 class="roas-method-title" id="method-title">Kristian's Method</h2>
+      <p class="roas-method-sub">The reasoning behind the numbers above.</p>
+    </header>
+
+    <div class="roas-method-grid">
+
+      <article class="roas-method-card">
+        <div class="roas-method-diagram roas-method-diagram--formula" aria-hidden="true">
+          <span class="formula-pill">Revenue</span>
+          <span class="formula-op">÷</span>
+          <span class="formula-pill">Ad Spend</span>
+          <span class="formula-op">=</span>
+          <span class="formula-pill is-result">ROAS</span>
+        </div>
+        <h3>The formula</h3>
+        <p>ROAS is the ratio between revenue and ad spend. A 2× ROAS means $2 back for every $1 spent. Simple enough — but revenue isn't profit.</p>
+      </article>
+
+      <article class="roas-method-card">
+        <div class="roas-method-diagram roas-method-diagram--breakdown" aria-hidden="true">
+          <div class="breakdown-bar">
+            <span class="breakdown-seg s-vat"      style="width:17%"><i>VAT</i></span>
+            <span class="breakdown-seg s-cogs"     style="width:22%"><i>COGS</i></span>
+            <span class="breakdown-seg s-shipping" style="width:14%"><i>Ship</i></span>
+            <span class="breakdown-seg s-fees"     style="width:5%" ><i>Fees</i></span>
+            <span class="breakdown-seg s-budget"   style="width:42%"><i>Ad budget</i></span>
+          </div>
+        </div>
+        <h3>What gets eaten first</h3>
+        <p>Every sale carries costs that chip into revenue before ad spend gets a slice: VAT, product cost, shipping, payment fees. What's left over is your real ad budget.</p>
+      </article>
+
+      <article class="roas-method-card">
+        <div class="roas-method-diagram roas-method-diagram--margin" aria-hidden="true">
+          <div class="margin-col">
+            <span class="margin-value">1.7×</span>
+            <div class="margin-bar"><i style="height:38%"></i></div>
+            <span class="margin-label">10%</span>
+          </div>
+          <div class="margin-col">
+            <span class="margin-value">2.1×</span>
+            <div class="margin-bar"><i style="height:64%"></i></div>
+            <span class="margin-label">20%</span>
+          </div>
+          <div class="margin-col">
+            <span class="margin-value">2.6×</span>
+            <div class="margin-bar"><i style="height:100%"></i></div>
+            <span class="margin-label">30%</span>
+          </div>
+        </div>
+        <h3>Margin lifts the bar</h3>
+        <p>Break-even ROAS only gets you to zero. To keep profit on the table, your ROAS has to clear break-even by enough room to cover the margin you want.</p>
+      </article>
+
+    </div>
   </section>
 
   <!-- ============================================================
@@ -338,6 +460,6 @@
   </footer>
 
   <script src="/js/nav.js"></script>
-  <script src="/js/roas-calculator.js"></script>
+  <script src="/js/roas-calculator.js?v=2"></script>
 </body>
 </html>
