@@ -20,6 +20,12 @@
 
   /* ---------- manifest ---------- */
   var BASE = "/assets/resources/Sound effects/";
+  // Standalone (uncategorised) sounds rendered as a single row at the
+  // top of the bank, above the categorised sections. Folder is "" since
+  // these files sit at the root of /Sound effects/.
+  var STANDALONE = [
+    { folder: "", file: "shopify sale.mp3" }
+  ];
   var MANIFEST = [
     { folder: "UI", title: "UI", files: [
       "Bamboo clonk.mp3","Beep.mp3","Button click.mp3","Camera shutter.mp3","Camera.mp3","Censor beep.mp3","Chat notification.mp3","Classic error.mp3","Click.mp3","Ding 2.mp3","Ding.mp3","Error dong dong.mp3","Error pop.mp3","Error tiktok.mp3","Message sent.mp3","Mouse click.mp3","Notification 3 tone.mp3","Notification.mp3","Online call.mp3","Phone camera.mp3","Phone typing.mp3","Pop bing.mp3","Typing satisfying.mp3","Typing.mp3"
@@ -72,7 +78,10 @@
 
   /* ---------- helpers ---------- */
   function encodeSeg(s) { return encodeURIComponent(s); }
-  function urlFor(folder, file) { return BASE + encodeSeg(folder) + "/" + encodeSeg(file); }
+  function urlFor(folder, file) {
+    if (!folder) return BASE + encodeSeg(file);
+    return BASE + encodeSeg(folder) + "/" + encodeSeg(file);
+  }
   function displayName(file) { return file.replace(/\.mp3$/i, ""); }
   function formatTime(sec) {
     if (!isFinite(sec)) return "—";
@@ -400,6 +409,22 @@
     if (!bank) return;
     bank.innerHTML = "";
     var globalIndex = 0;
+
+    // Standalone (uncategorised) row(s) sit above any category section,
+    // styled identically to the categorised rows but with no heading.
+    if (STANDALONE.length) {
+      var standaloneSection = document.createElement("div");
+      standaloneSection.className = "audio-section";
+      var standaloneList = document.createElement("div");
+      standaloneList.className = "audio-list";
+      STANDALONE.forEach(function (item) {
+        standaloneList.appendChild(buildRow(item.file, item.folder, globalIndex));
+        globalIndex += 1;
+      });
+      standaloneSection.appendChild(standaloneList);
+      bank.appendChild(standaloneSection);
+    }
+
     MANIFEST.forEach(function (cat) {
       var section = document.createElement("div");
       section.className = "audio-section";
