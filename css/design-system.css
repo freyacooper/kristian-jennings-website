@@ -729,6 +729,37 @@ a.breadcrumb-link:hover {
   .page-title { font-size: 56px; }
 }
 
+/* ============================================================
+   BACK LINK — subtle "← Back to home" used on transactional pages
+   where a full nav would feel heavy
+   ============================================================ */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "Geist";
+  font-weight: 500;
+  font-size: 13.5px;
+  color: var(--fg-2);
+  text-decoration: none;
+  padding: 8px 14px 8px 8px;
+  border-radius: 999px;
+  transition:
+    color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    background 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.back-link:hover {
+  color: var(--ink);
+  background: rgba(1, 31, 47, 0.04);
+}
+.back-link svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.back-link:hover svg { transform: translateX(-2px); }
+
 /* ---------- helpers ---------- */
 .sr-only {
   position: absolute;
