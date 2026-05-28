@@ -18,6 +18,7 @@
   var currencySelect = root.querySelector("[data-roas-currency]");
   var currencyPrefixes = root.querySelectorAll("[data-currency-prefix]");
   var toggleBtns = root.querySelectorAll("[data-target-mode]");
+  var toggleEl = root.querySelector(".roas-toggle");
   var marginField = root.querySelector('[data-target-field="margin"]');
   var roasField = root.querySelector('[data-target-field="roas"]');
   var contextEl = root.querySelector("[data-target-context]");
@@ -28,6 +29,7 @@
   Array.prototype.forEach.call(toggleBtns, function (b) {
     if (b.classList.contains("is-active")) targetMode = b.dataset.targetMode;
   });
+  if (toggleEl) toggleEl.dataset.active = targetMode;
 
   /* ---------- math ---------- */
   function compute(state) {
@@ -131,6 +133,7 @@
   /* ---------- target-mode toggle ---------- */
   function setTargetMode(mode) {
     targetMode = mode;
+    if (toggleEl) toggleEl.dataset.active = mode;
     Array.prototype.forEach.call(toggleBtns, function (b) {
       var active = b.dataset.targetMode === mode;
       b.classList.toggle("is-active", active);

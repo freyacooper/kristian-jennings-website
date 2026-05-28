@@ -92,6 +92,10 @@
   flex-direction: column;
   gap: 6px;
 }
+/* The Target CPA fields toggle via the [hidden] attribute (set in JS).
+   .roas-field's display:flex would otherwise override [hidden]'s
+   display:none, so the unused field must be explicitly hidden. */
+.roas-field[hidden] { display: none; }
 .roas-field > label {
   font-family: "Geist";
   font-weight: 500;
@@ -175,9 +179,9 @@
 }
 .roas-target-head {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
 }
 .roas-target-title {
   font-family: "Sora";
@@ -188,37 +192,55 @@
   margin: 0;
 }
 
-/* Segmented toggle (iOS-style) — two pill buttons sharing a track */
+/* Segmented toggle (iOS-style) — two equal-width cells with a white
+   "thumb" that slides between them. The thumb is a ::before pill sitting
+   behind the labels; JS sets data-active on the track to drive it. */
 .roas-toggle {
-  display: inline-flex;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  align-self: flex-start;
   background: rgba(1, 31, 47, 0.06);
   border: 1px solid rgba(1, 31, 47, 0.08);
   border-radius: 999px;
   padding: 3px;
-  gap: 2px;
 }
+/* The sliding thumb. Width matches one cell (half the inner track);
+   translateX(100%) moves it exactly one cell to the right. */
+.roas-toggle::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  background: var(--paper);
+  border-radius: 999px;
+  box-shadow: 0 1px 3px rgba(1, 31, 47, 0.1), 0 0 0 1px rgba(1, 31, 47, 0.04);
+  transition: transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.roas-toggle[data-active="roas"]::before { transform: translateX(100%); }
 .roas-toggle-btn {
   appearance: none;
   border: 0;
   background: transparent;
+  position: relative;
+  z-index: 1;
   font-family: "Geist";
   font-weight: 500;
   font-size: 12px;
   letter-spacing: -0.005em;
   color: var(--fg-2);
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 999px;
   cursor: pointer;
-  transition:
-    background 200ms cubic-bezier(0.16, 1, 0.3, 1),
-    color 200ms cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 240ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: color 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .roas-toggle-btn:hover { color: var(--ink); }
-.roas-toggle-btn.is-active {
-  background: var(--paper);
-  color: var(--ink);
-  box-shadow: 0 1px 3px rgba(1, 31, 47, 0.1), 0 0 0 1px rgba(1, 31, 47, 0.04);
+.roas-toggle-btn.is-active { color: var(--ink); }
+@media (prefers-reduced-motion: reduce) {
+  .roas-toggle::before { transition: none; }
 }
 
 /* ---------- results (right) ---------- */
