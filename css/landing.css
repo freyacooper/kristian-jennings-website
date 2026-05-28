@@ -855,3 +855,12 @@
   list-style: none;
   margin: 0;
 }
+
+/* Kit injects a Creator Network "recommendations" overlay on a successful
+   subscribe and only redirects after it's dismissed. We skip it entirely —
+   index.html redirects to /confirm/ the moment this overlay is inserted —
+   so hide it here as a safety net against any flash. */
+.seva-overlay,
+.formkit-overlay {
+  display: none !important;
+}

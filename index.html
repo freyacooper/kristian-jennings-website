@@ -479,5 +479,37 @@
   <script src="js/landing.js"></script>
   <!-- Kit (ConvertKit) — handles newsletter form AJAX submission -->
   <script async src="https://f.convertkit.com/ckjs/ck.5.js"></script>
+  <!-- On a successful subscribe Kit shows its Creator Network
+       "recommendations" modal and only redirects once it's dismissed.
+       We skip it: that overlay is only ever inserted on success, so the
+       moment it appears we redirect straight to our own /confirm/ page.
+       (landing.css also hides the overlay as a safety net.) -->
+  <script>
+    (function () {
+      var DEST = '/confirm/';
+      var done = false;
+      function go() {
+        if (done) return;
+        done = true;
+        window.location.href = DEST;
+      }
+      function isOverlay(node) {
+        return node.nodeType === 1 && (
+          (node.matches && node.matches('.seva-overlay, .formkit-overlay')) ||
+          (node.querySelector && node.querySelector('.seva-overlay, .formkit-overlay'))
+        );
+      }
+      new MutationObserver(function (mutations, obs) {
+        for (var i = 0; i < mutations.length; i++) {
+          var added = mutations[i].addedNodes;
+          for (var j = 0; j < added.length; j++) {
+            if (isOverlay(added[j])) { obs.disconnect(); go(); return; }
+          }
+        }
+      }).observe(document.body, { childList: true, subtree: true });
+      // Backup signal: Kit's bubbling event when the modal iframe loads.
+      document.addEventListener('ckjs:guard:loaded', go, true);
+    })();
+  </script>
 </body>
 </html>
