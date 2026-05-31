@@ -1,0 +1,453 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Kristian Jennings — site fonts (loaded from the parent site,
+   same origin, served at /assets/fonts/).
+   ============================================================ */
+@font-face {
+  font-family: "Sora";
+  src: url("/assets/fonts/Sora-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist";
+  src: url("/assets/fonts/Geist-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+/* ===== Site design tokens (mirror of /css/design-system.css) ===== */
+:root {
+  --ink: #011f2f;
+  --teal: #00d0d3;
+  --teal-700: #009d9f;
+  --teal-900: #016a6a;
+  --mist: #d7f4f2;
+  --sand: #f2ece9;
+  --cream: #fffcf8;
+  --paper: #ffffff;
+  --accent: var(--teal-700);
+  --accent-deep: var(--teal-900);
+  --hairline: rgba(1, 31, 47, 0.08);
+  --soft: rgba(1, 31, 47, 0.14);
+  --fg-2: rgba(1, 31, 47, 0.7);
+  --fg-3: rgba(1, 31, 47, 0.52);
+}
+
+/* ===== iOS 17 theme variables (used by PhonePreview — DO NOT TOUCH) ===== */
+:root {
+  --ios-bg: #ffffff;
+  --ios-text: #000000;
+  --ios-secondary-text: #8E8E93;
+
+  --ios-bubble-receiver: #E9E9EB;
+  --ios-bubble-receiver-text: #000000;
+  --ios-bubble-sender: #007AFF;
+  --ios-bubble-sender-text: #ffffff;
+
+  --ios-nav-bg: rgba(246, 246, 246, 0.94);
+  --ios-nav-border: #C6C6C8;
+  --ios-status-text: #000000;
+
+  --ios-input-bg: #ffffff;
+  --ios-input-field: #ffffff;
+  --ios-input-border: #C6C6C8;
+  --ios-input-placeholder: #8E8E93;
+
+  --ios-keyboard-bg: #D1D4D9;
+  --ios-key-bg: #ffffff;
+  --ios-key-text: #000000;
+  --ios-key-shadow: rgba(0, 0, 0, 0.3);
+  --ios-key-fn-bg: #ABB0BC;
+
+  --ios-header-bg: #F7F7F7;
+  --ios-header-shadow: rgba(0, 0, 0, 0.12);
+  /* Instagram theme — light mode (used by the Instagram PhonePreview) */
+  --ig-bg: #ffffff;
+  --ig-text: #000000;
+  --ig-secondary-text: #8e8e8e;
+  --ig-header-bg: #ffffff;
+  --ig-header-border: rgba(0, 0, 0, 0.08);
+  --ig-bubble-receiver: #efefef;
+  --ig-bubble-receiver-text: #000000;
+  --ig-bubble-sender-gradient: linear-gradient(180deg, #A33CD3 0%, #A33CD3 25%, #594DF0 60%, #594DF0 100%);
+  --ig-bubble-sender-text: #ffffff;
+  --ig-active-dot: #2ecc71;
+  --ig-link: #3897F0;
+  --ig-unread-dot: #3897F0;
+  --ig-camera-bg: linear-gradient(135deg, #A33CD3 0%, #594DF0 100%);
+  --ig-input-bg: #ffffff;
+  --ig-input-pill-bg: #efefef;
+  --ig-input-placeholder: #8e8e8e;
+  --ig-key-bg: #ffffff;
+  --ig-key-fn-bg: #ABB0BC;
+  --ig-key-shadow: rgba(0, 0, 0, 0.3);
+  --ig-key-text: #000000;
+  --ig-keyboard-bg: #D1D4D9;
+  --ig-status-text: #000000;
+  --ig-home-indicator: #000000;
+  --ig-search-bg: rgba(118, 118, 128, 0.12);
+  --ig-search-text: #000000;
+}
+
+[data-theme="dark"] {
+  --ios-bg: #000000;
+  --ios-text: #ffffff;
+  --ios-secondary-text: #8E8E93;
+
+  --ios-bubble-receiver: #26252A;
+  --ios-bubble-receiver-text: #ffffff;
+  --ios-bubble-sender: #007AFF;
+  --ios-bubble-sender-text: #ffffff;
+
+  --ios-nav-bg: rgba(28, 28, 30, 0.94);
+  --ios-nav-border: #38383A;
+  --ios-status-text: #ffffff;
+
+  --ios-input-bg: #000000;
+  --ios-input-field: #1C1C1E;
+  --ios-input-border: #38383A;
+  --ios-input-placeholder: #8E8E93;
+
+  --ios-keyboard-bg: #2C2C2E;
+  --ios-key-bg: #6B6B6E;
+  --ios-key-text: #ffffff;
+  --ios-key-shadow: rgba(0, 0, 0, 0.5);
+  --ios-key-fn-bg: #494A4D;
+
+  --ios-header-bg: #1C1C1E;
+  --ios-header-shadow: rgba(255, 255, 255, 0.1);
+  --ig-bg: #000000;
+  --ig-text: #ffffff;
+  --ig-secondary-text: rgba(255, 255, 255, 0.55);
+  --ig-header-bg: #000000;
+  --ig-header-border: rgba(255, 255, 255, 0.08);
+  --ig-bubble-receiver: #262626;
+  --ig-bubble-receiver-text: #ffffff;
+  --ig-bubble-sender-gradient: linear-gradient(180deg, #A33CD3 0%, #A33CD3 25%, #594DF0 60%, #594DF0 100%);
+  --ig-bubble-sender-text: #ffffff;
+  --ig-active-dot: #2ecc71;
+  --ig-link: #3897F0;
+  --ig-unread-dot: #3897F0;
+  --ig-camera-bg: linear-gradient(135deg, #A33CD3 0%, #594DF0 100%);
+  --ig-input-bg: #000000;
+  --ig-input-pill-bg: #1c1c1e;
+  --ig-input-placeholder: rgba(255, 255, 255, 0.55);
+  --ig-key-bg: #6B6B6E;
+  --ig-key-fn-bg: #494A4D;
+  --ig-key-shadow: rgba(0, 0, 0, 0.5);
+  --ig-key-text: #ffffff;
+  --ig-keyboard-bg: #2C2C2E;
+  --ig-status-text: #ffffff;
+  --ig-home-indicator: #ffffff;
+  --ig-search-bg: rgba(118, 118, 128, 0.24);
+  --ig-search-text: #ffffff;
+}
+
+/* ============================================================
+   Base — match the site's body styling
+   ============================================================ */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  color: var(--ink);
+  /* Transparent in production so the parent page's gradient shows
+     through the iframe seamlessly. Falls back to a soft cream for
+     standalone dev (npm run dev). */
+  background: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   Site-matched utility classes used by ControlsPanel / Export
+   ============================================================ */
+
+/* Glass card — used for Section wrappers and message cards */
+.kj-card {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 20px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 20px 50px -28px rgba(1, 31, 47, 0.18),
+    0 8px 24px -18px rgba(1, 31, 47, 0.08);
+}
+
+/* Section heading (Sora) */
+.kj-section-title {
+  font-family: "Sora", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+}
+.kj-field-label {
+  font-family: "Geist", sans-serif;
+  font-weight: 500;
+  font-size: 12.5px;
+  letter-spacing: -0.005em;
+  color: var(--fg-2);
+}
+.kj-row-label {
+  font-family: "Geist", sans-serif;
+  font-weight: 500;
+  font-size: 13.5px;
+  color: var(--ink);
+}
+.kj-hint {
+  font-family: "Geist", sans-serif;
+  font-size: 11.5px;
+  color: var(--fg-3);
+}
+
+/* Input + textarea */
+.kj-input {
+  display: flex;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  padding: 10px 13px;
+  font-family: "Geist", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+  transition:
+    border-color 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    background 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.kj-input::placeholder { color: var(--fg-3); }
+.kj-input:hover {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(1, 31, 47, 0.18);
+}
+.kj-input:focus,
+.kj-input:focus-within {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(0, 208, 211, 0.18);
+}
+/* Hide spin buttons on number inputs */
+.kj-input[type="number"]::-webkit-inner-spin-button,
+.kj-input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.kj-input[type="number"] { -moz-appearance: textfield; }
+
+/* Secondary pill button (default Button primitive) */
+.kj-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-family: "Geist", sans-serif;
+  font-weight: 500;
+  font-size: 12.5px;
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    background 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.kj-btn:hover { background: rgba(255, 255, 255, 0.95); border-color: rgba(1, 31, 47, 0.18); }
+.kj-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Icon-only square button (move/delete) */
+.kj-iconbtn {
+  appearance: none;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 180ms cubic-bezier(0.16, 1, 0.3, 1), color 180ms;
+}
+.kj-iconbtn:hover { background: rgba(255, 255, 255, 0.95); }
+.kj-iconbtn:disabled { opacity: 0.3; cursor: not-allowed; }
+.kj-iconbtn--danger { color: #c0392b; }
+.kj-iconbtn--danger:hover { background: rgba(192, 57, 43, 0.08); }
+
+/* Primary teal button (Download PNG) */
+.kj-btn-primary {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #ffffff;
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 28px;
+  font-family: "Geist", sans-serif;
+  font-weight: 600;
+  font-size: 14.5px;
+  letter-spacing: -0.005em;
+  cursor: pointer;
+  box-shadow: 0 12px 32px -10px rgba(0, 157, 159, 0.5), 0 0 0 0 rgba(0, 208, 211, 0);
+  transition: filter 200ms, box-shadow 240ms;
+}
+.kj-btn-primary:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 16px 36px -10px rgba(0, 157, 159, 0.6), 0 0 0 3px rgba(0, 208, 211, 0.1);
+}
+.kj-btn-primary:disabled {
+  background: rgba(1, 31, 47, 0.2);
+  box-shadow: none;
+  cursor: not-allowed;
+  filter: none;
+}
+
+/* iOS-style toggle switch (single on/off) */
+.kj-switch {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--soft);
+  border: 1px solid transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 220ms cubic-bezier(0.32, 0.72, 0, 1);
+  padding: 0;
+}
+.kj-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(1, 31, 47, 0.18), 0 0 0 1px rgba(1, 31, 47, 0.04);
+  transition: transform 260ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.kj-switch[aria-checked="true"] { background: var(--accent); }
+.kj-switch[aria-checked="true"]::after { transform: translateX(18px); }
+
+/* Segmented control with sliding thumb (n columns set via --cols + --active index) */
+.kj-segmented {
+  position: relative;
+  display: inline-grid;
+  background: rgba(1, 31, 47, 0.06);
+  border: 1px solid rgba(1, 31, 47, 0.08);
+  border-radius: 999px;
+  padding: 3px;
+  grid-template-columns: repeat(var(--cols, 2), 1fr);
+}
+.kj-segmented::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc((100% - 6px) / var(--cols, 2));
+  background: var(--paper);
+  border-radius: 999px;
+  box-shadow: 0 1px 3px rgba(1, 31, 47, 0.1), 0 0 0 1px rgba(1, 31, 47, 0.04);
+  transition: transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+  transform: translateX(calc(var(--active, 0) * 100%));
+}
+.kj-segmented button {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  position: relative;
+  z-index: 1;
+  padding: 6px 14px;
+  font-family: "Geist", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: -0.005em;
+  color: var(--fg-2);
+  cursor: pointer;
+  transition: color 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
+}
+.kj-segmented button:hover { color: var(--ink); }
+.kj-segmented button.is-active { color: var(--ink); }
+
+/* Pill chip used for timestamp/delivery presets */
+.kj-chip {
+  appearance: none;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-family: "Geist", sans-serif;
+  font-weight: 500;
+  font-size: 11.5px;
+  color: var(--fg-2);
+  cursor: pointer;
+  transition: background 180ms, border-color 180ms, color 180ms;
+}
+.kj-chip:hover { color: var(--ink); border-color: rgba(1, 31, 47, 0.18); }
+.kj-chip.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+/* Native range input — site teal accent */
+.kj-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(1, 31, 47, 0.12);
+  outline: none;
+}
+.kj-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(1, 31, 47, 0.18);
+  cursor: pointer;
+}
+.kj-range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid #fff;
+  cursor: pointer;
+}
+
+/* Error toast */
+.kj-error {
+  font-family: "Geist", sans-serif;
+  font-size: 13px;
+  color: #c0392b;
+  background: rgba(192, 57, 43, 0.08);
+  border: 1px solid rgba(192, 57, 43, 0.2);
+  border-radius: 12px;
+  padding: 10px 14px;
+  max-width: 28rem;
+  text-align: center;
+}

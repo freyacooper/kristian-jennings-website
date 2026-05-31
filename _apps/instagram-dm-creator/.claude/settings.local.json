@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"/Users/kristianjennings/Kristian/Claude Code/\")",
+      "Read(//Users/kristianjennings/Kristian/Claude Code/**)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "WebSearch",
+      "WebFetch(domain:maketecheasier.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:www.svgrepo.com)",
+      "Bash(curl -sL -A \"Mozilla/5.0\" https://www.svgrepo.com/download/356180/microphone.svg)",
+      "WebFetch(domain:javascript.plainenglish.io)",
+      "WebFetch(domain:medium.com)"
+    ]
+  }
+}

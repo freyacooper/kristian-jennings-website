@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"/Users/kristianjennings/Kristian/Claude Code/\")",
+      "Read(//Users/kristianjennings/Kristian/Claude Code/**)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "WebSearch",
+      "WebFetch(domain:trend-rays.com)",
+      "WebFetch(domain:screenrant.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:gist.github.com)"
+    ]
+  }
+}
