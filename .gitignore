@@ -1,7 +1,3 @@
-# React tool sources — kept locally for re-building, not deployed.
-# Only the built output (copied into tools/<name>/app/) gets committed.
-_apps/
-
 # Dependencies
 node_modules/
 .pnp
