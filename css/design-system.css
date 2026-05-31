@@ -745,6 +745,33 @@ a.breadcrumb-link:hover {
 }
 
 /* ============================================================
+   TOOL EMBED — host container for React tools loaded via iframe
+   (sits between .page-header and .footer on a tool page)
+   ============================================================ */
+.tool-embed {
+  max-width: var(--max);
+  margin: 0 auto 64px;
+  padding: 0 20px;
+}
+@media (min-width: 700px) { .tool-embed { padding: 0 48px; margin-bottom: 80px; } }
+@media (min-width: 980px) { .tool-embed { padding: 0 72px; margin-bottom: 96px; } }
+
+.tool-embed iframe {
+  display: block;
+  width: 100%;
+  /* Take most of the viewport so the embedded tool's right column (e.g.
+     a phone preview) has room to render at a comfortable size without
+     scrolling. The left controls panel scrolls internally. */
+  height: calc(100vh - 160px);
+  min-height: 760px;
+  /* Invisible iframe chrome — the embedded app blends with the page
+     background. The app sets body to transparent so the parent's
+     gradient shows through seamlessly. */
+  border: 0;
+  background: transparent;
+}
+
+/* ============================================================
    BACK LINK — subtle "← Back to home" used on transactional pages
    where a full nav would feel heavy
    ============================================================ */
