@@ -1,0 +1,53 @@
+/* ============================================================
+   LEGAL — long-form prose for the Privacy page (and future
+   legal pages). Sits under a centered .page-header.
+   ============================================================ */
+.legal {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 20px 72px;
+  font-family: "Geist", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--fg-2);
+}
+@media (min-width: 700px) {
+  .legal { padding: 0 48px 88px; }
+}
+@media (min-width: 980px) {
+  .legal { padding: 0 72px 104px; }
+}
+
+.legal-updated {
+  color: var(--fg-3);
+  font-size: 13px;
+  margin: 0 0 36px;
+}
+
+.legal h2 {
+  font-family: "Sora", sans-serif;
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 38px 0 10px;
+}
+.legal h2:first-of-type { margin-top: 0; }
+
+.legal p { margin: 0 0 14px; }
+
+.legal ul {
+  margin: 0 0 14px;
+  padding-left: 20px;
+}
+.legal li { margin: 0 0 8px; }
+
+.legal strong { color: var(--ink); font-weight: 600; }
+
+.legal a {
+  color: var(--accent-deep);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.legal a:hover { color: var(--teal-900); }

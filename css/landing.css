@@ -155,6 +155,17 @@
   }
 }
 
+/* Tools / Resources index pages — reuse the .tools-grid cards under a
+   centered .page-header, in a plain max-width container (no cream
+   pedestal like the landing section). */
+.collection {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 20px 64px;
+}
+@media (min-width: 700px) { .collection { padding: 0 48px 80px; } }
+@media (min-width: 980px) { .collection { padding: 0 72px 96px; } }
+
 /* ============================================================
    TOOLS — glass cards over colored orbs, on a cream pedestal
    ============================================================ */
