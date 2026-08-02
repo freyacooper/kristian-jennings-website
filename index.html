@@ -2,22 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Kristian Jennings</title>
+  <title>Kristian Jennings — Tools for Ecommerce, Editing &amp; AI Creators</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Tools & resources to help you build, launch and scale your Ecom brand. All in one place. All free.">
+  <meta name="description" content="Free tools and resources for ecommerce, video editing and AI — the ones I actually use to make ads that print.">
   <link rel="icon" type="image/png" href="/assets/images/favicon.png">
   <link rel="apple-touch-icon" href="/assets/images/favicon.png">
-  <link rel="stylesheet" href="css/design-system.css">
-  <link rel="stylesheet" href="css/landing.css?v=6">
+  <link rel="stylesheet" href="css/design-system.css?v=2">
+  <link rel="stylesheet" href="css/landing.css?v=24">
 </head>
-<body>
+<body class="has-hero">
 
   <!-- ============================================================
        NAV
        ============================================================ -->
   <header class="nav">
     <a class="nav-brand" href="#top">
-      <img src="assets/images/new-logo.webp" alt="Kristian Jennings" class="nav-logo">
+      <img src="assets/images/logo-dark.webp" alt="Kristian Jennings" class="nav-logo nav-logo-dark">
+      <img src="assets/images/logo-light.webp" alt="Kristian Jennings" class="nav-logo nav-logo-light">
     </a>
 
     <ul class="nav-links" aria-label="Primary">
@@ -180,6 +181,10 @@
           </div>
         </div>
       </li>
+
+      <li>
+        <a class="nav-link" href="/my-story/">My Story</a>
+      </li>
     </ul>
 
     <div class="nav-cta">
@@ -201,27 +206,34 @@
   </header>
 
   <!-- ============================================================
-       HERO
+       HERO — pinned scroll-scrubbed video. .hero-pin's height sets how
+       much scroll distance drives the scrub (js/hero.js); .hero sticks
+       to the top of the viewport for that whole distance, then
+       releases into normal scroll once the video reaches its last
+       frame and the headline has risen to center. The video is
+       swapped for a static image of its true last frame once the
+       scrub completes (see js/hero.js) — cheaper to keep on screen
+       than a video element once scrubbing is done, and the exit
+       defocus transition will run against that image, not the video.
        ============================================================ -->
-  <section class="hero-stack" id="top" aria-label="Intro">
-    <div class="hero-text-top">
-      <h1 class="display">Tools &amp; Resources to help you build, launch and scale your Ecom brand</h1>
-      <p class="lead">All in one place. All free.</p>
-    </div>
+  <div class="hero-pin" data-hero-pin>
+    <section class="hero" id="top" aria-label="Intro" data-hero>
+      <video class="hero-video" data-hero-video muted playsinline preload="auto" aria-hidden="true">
+        <source src="assets/video/hero-1.mp4" type="video/mp4">
+      </video>
+      <img class="hero-video-fallback" data-hero-fallback src="assets/images/hero-last-frame.png" alt="">
 
-    <div class="hero-photo">
-      <div class="backdrop"><div class="backdrop-circle"></div></div>
-      <img src="assets/images/kristian.png" alt="Kristian Jennings" loading="eager">
-    </div>
+      <h1 class="hero-headline" data-hero-headline>Get the tools I use to make ads that print</h1>
 
-    <div class="hero-text-bottom">
-      <div class="hero-actions">
-        <button class="btn btn-primary" type="button" data-nl-open="hero" style="font-size:14px">
-          Subscribe to the newsletter
-        </button>
+      <div class="hero-scroll-cue" data-hero-cue aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+        <span>Scroll</span>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
   <!-- ============================================================
        TOOLS
@@ -229,12 +241,23 @@
   <section class="tools" id="tools">
     <div class="tools-inner">
       <div class="tools-head">
-        <span class="eyebrow">Your unfair advantage</span>
-        <h2>Free Tools &amp; Resources</h2>
-        <p class="lead">From my bank of winning static ads to the Roadmap I use to scale to $100k/mo. These are the tools and resources I use for my own Shopify store. Listed here and updated regularly. Use whatever is useful to you.</p>
+        <div class="tools-head-text">
+          <span class="eyebrow">Your unfair advantage</span>
+          <h2>Interactive Tools</h2>
+        </div>
+        <div class="carousel-nav">
+          <button type="button" class="carousel-btn" data-carousel-prev aria-label="Scroll left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                 stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7" /></svg>
+          </button>
+          <button type="button" class="carousel-btn" data-carousel-next aria-label="Scroll right">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                 stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7" /></svg>
+          </button>
+        </div>
       </div>
 
-      <div class="tools-grid">
+      <div class="tools-carousel" data-carousel>
 
         <!-- Tool: iMessage Screenshot Maker -->
         <a class="tool-card" href="/tools/imessage-screenshot-maker/">
@@ -256,7 +279,6 @@
           <div class="tool-body">
             <span class="tool-tag">Creative tool</span>
             <h3>iMessage Screenshot Maker</h3>
-            <p class="body-sm">Generate realistic iPhone iMessage screenshots in seconds. Perfect for social proof, Static, and native image ad creatives.</p>
             <span class="tool-cta">Open the maker</span>
           </div>
         </a>
@@ -291,7 +313,6 @@
           <div class="tool-body">
             <span class="tool-tag">Creative tool</span>
             <h3>iMessage Inbox</h3>
-            <p class="body-sm">Generate realistic iOS Messages inbox screenshots in seconds. Perfect for social proof and ad creatives.</p>
             <span class="tool-cta">Open the maker</span>
           </div>
         </a>
@@ -315,7 +336,6 @@
           <div class="tool-body">
             <span class="tool-tag">Creative tool</span>
             <h3>Instagram DM Creator</h3>
-            <p class="body-sm">Generate realistic Instagram DM screenshots in seconds. Perfect for social proof and ad creatives.</p>
             <span class="tool-cta">Open the creator</span>
           </div>
         </a>
@@ -359,7 +379,6 @@
           <div class="tool-body">
             <span class="tool-tag">Creative tool</span>
             <h3>Instagram Inbox</h3>
-            <p class="body-sm">Generate realistic Instagram inbox screenshots in seconds. Perfect for social proof and ad creatives.</p>
             <span class="tool-cta">Open the maker</span>
           </div>
         </a>
@@ -396,12 +415,39 @@
           <div class="tool-body">
             <span class="tool-tag">Ecom calculator</span>
             <h3>ROAS Calculator</h3>
-            <p class="body-sm">Plug in your revenue and ad spend to get your Return on Ad Spend at a glance. Profitable or not — know in seconds.</p>
             <span class="tool-cta">Open the calculator</span>
           </div>
         </a>
 
-        <!-- Tool: Sound Effect Bank -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       RESOURCES
+       ============================================================ -->
+  <section class="resources" id="resources">
+    <div class="tools-inner">
+      <div class="tools-head">
+        <div class="tools-head-text">
+          <span class="eyebrow">Free downloads</span>
+          <h2>Free Resources</h2>
+        </div>
+        <div class="carousel-nav">
+          <button type="button" class="carousel-btn" data-carousel-prev aria-label="Scroll left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                 stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7" /></svg>
+          </button>
+          <button type="button" class="carousel-btn" data-carousel-next aria-label="Scroll right">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                 stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7" /></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="tools-carousel" data-carousel>
+
+        <!-- Resource: Sound Effect Bank -->
         <a class="tool-card" href="/resources/sound-effect-bank/">
           <div class="tool-visual">
             <div class="tv tv-sfx" aria-hidden="true">
@@ -438,7 +484,6 @@
           <div class="tool-body">
             <span class="tool-tag">Audio library</span>
             <h3>Sound Effect Bank</h3>
-            <p class="body-sm">A free library of sound effects content creators and ecommerce brands can download and drop straight into video ads.</p>
             <span class="tool-cta">Open the bank</span>
           </div>
         </a>
@@ -513,7 +558,6 @@
           <div class="tool-body">
             <span class="tool-tag">Design resource</span>
             <h3>Icon Library</h3>
-            <p class="body-sm">A growing collection of clean, on-brand SVG icons for your store, ads and creatives. Browse, copy, drop straight into your designs.</p>
             <span class="tool-cta">Open the library</span>
           </div>
         </a>
@@ -523,12 +567,30 @@
   </section>
 
   <!-- ============================================================
+       BIO — dark full-bleed photo + first-person authority copy
+       ============================================================ -->
+  <section class="bio" id="about" aria-label="About Kristian">
+    <div class="bio-content">
+      <span class="eyebrow">Let me introduce myself</span>
+      <h2 class="bio-greeting">Hi, I&rsquo;m Kristian</h2>
+      <p class="bio-copy">I&rsquo;m a coach inside of EcomTalent and I work with a team to scale 7 and 8 figure brands. I really love helping people with their own Ecom journeys — if you&rsquo;ve got a specific question, drop me a message on Discord, I&rsquo;d love to connect: <span class="bio-handle">@kristian_jennings</span></p>
+      <a class="bio-cta" href="/my-story/">
+        Read my story
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M13 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
        NEWSLETTER
        ============================================================ -->
   <section class="newsletter" id="newsletter">
-    <div class="newsletter-card">
+    <div class="newsletter-content">
       <span class="eyebrow">The newsletter</span>
-      <h2>Get The Sauce. 🍝</h2>
+      <h2>Get The Sauce.</h2>
       <p class="lead">I share what I've been working on, what I've learned, and anything useful I've come across — Meta updates, Shopify changes, AI tools and stuff you actually use to make more money. Reply anytime, I read every one.</p>
 
       <!-- Kit (ConvertKit) form. The classes / data-* attrs are what
@@ -577,6 +639,60 @@
   </section>
 
   <!-- ============================================================
+       PLATFORMS — YouTube / Instagram / Discord. Same URLs as the
+       footer socials; Discord has no link anywhere in the codebase
+       yet, so its button is an inert placeholder (href="#") pending
+       the real invite link.
+       ============================================================ -->
+  <section class="platforms" id="platforms">
+    <div class="platforms-head">
+      <span class="eyebrow">Come say hi</span>
+      <h2>Let&rsquo;s connect</h2>
+    </div>
+
+    <div class="platforms-grid">
+      <div class="platform-card">
+        <img class="platform-banner" src="assets/images/youtube-banner.webp" alt="" loading="lazy">
+        <h3>YouTube</h3>
+        <p class="body-sm">Full breakdowns of my ad edits, Shopify builds and AI workflows — everything laid out step by step.</p>
+        <a class="platform-cta" href="https://www.youtube.com/@Kristian_Jennings" target="_blank" rel="noreferrer">
+          Watch on YouTube
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14M13 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="platform-card">
+        <img class="platform-banner" src="assets/images/instagram-banner.webp" alt="" loading="lazy">
+        <h3>Instagram</h3>
+        <p class="body-sm">The behind-the-scenes feed — quick wins, day-to-day builds and a closer look at how I work.</p>
+        <a class="platform-cta" href="https://www.instagram.com/kristian_jennin/" target="_blank" rel="noreferrer">
+          Follow on Instagram
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14M13 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="platform-card">
+        <img class="platform-banner" src="assets/images/discord-banner.webp" alt="" loading="lazy">
+        <h3>Discord</h3>
+        <p class="body-sm">Come hang out, ask me anything directly, and get first access to new tools before anyone else.</p>
+        <a class="platform-cta" href="#" target="_blank" rel="noreferrer">
+          Join the Discord
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14M13 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
        FOOTER
        ============================================================ -->
   <footer class="footer">
@@ -584,7 +700,7 @@
       <div class="footer-grid">
         <div class="footer-brand-col">
           <a class="footer-brand" href="#top">
-            <img src="assets/images/new-logo.webp" alt="Kristian Jennings" class="footer-logo">
+            <img src="assets/images/logo-dark.webp" alt="Kristian Jennings" class="footer-logo">
           </a>
           <ul class="footer-social" aria-label="Social links">
             <li><a class="fs fs-youtube" href="https://www.youtube.com/@Kristian_Jennings" target="_blank" rel="noreferrer" aria-label="YouTube">
@@ -631,6 +747,13 @@
             <li><a href="/resources/icon-library/">Icon Library</a></li>
           </ul>
         </div>
+
+        <div class="footer-links-col">
+          <h4 class="footer-heading">Info</h4>
+          <ul class="footer-list">
+            <li><a href="/my-story/">My Story</a></li>
+          </ul>
+        </div>
       </div>
 
       <div class="footer-bottom">
@@ -642,8 +765,8 @@
 
   <!-- ============================================================
        NEWSLETTER MODAL — same card design as the inline section,
-       opened from the nav / hero / footer subscribe buttons. Holds one
-       Kit form per source (navbar/hero/footer) so each signup is
+       opened from the nav / footer subscribe buttons. Holds one
+       Kit form per source (navbar/footer) so each signup is
        attributed separately; landing.js reveals the matching one.
        ============================================================ -->
   <div class="nl-modal" data-nl-modal hidden>
@@ -657,7 +780,7 @@
           </svg>
         </button>
         <span class="eyebrow">The newsletter</span>
-        <h2>Get The Sauce. 🍝</h2>
+        <h2>Get The Sauce.</h2>
         <p class="lead">I share what I've been working on, what I've learned, and anything useful I've come across — Meta updates, Shopify changes, AI tools and stuff you actually use to make more money. Reply anytime, I read every one.</p>
 
         <!-- NAVBAR form -->
@@ -674,40 +797,6 @@
           <ul class="formkit-alert formkit-alert-error newsletter-alert" data-element="errors" data-group="alert"></ul>
           <label class="sr-only" for="nl-email-navbar">Email address</label>
           <input id="nl-email-navbar" name="email_address" class="newsletter-input formkit-input"
-                 type="email" autocomplete="email" placeholder="you@yourstore.com" aria-label="Email address" required>
-          <button type="submit" data-element="submit" class="btn btn-primary btn-block formkit-submit">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
-                 stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="5" width="18" height="14" rx="2" />
-              <path d="M3 7l9 6 9-6" />
-            </svg>
-            <span class="newsletter-cta-label">I'm in</span>
-            <span class="formkit-spinner" aria-hidden="true"><span></span><span></span><span></span></span>
-          </button>
-          <div class="newsletter-fine">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
-                 stroke-linecap="round" stroke-linejoin="round">
-              <rect x="4" y="11" width="16" height="10" rx="2" />
-              <path d="M8 11V7a4 4 0 0 1 8 0v4" />
-            </svg>
-            <span>Free  •  Unsubscribe whenever  •  No hard feelings</span>
-          </div>
-        </form>
-
-        <!-- HERO form -->
-        <form action="https://app.kit.com/forms/9494875/subscriptions"
-              method="post"
-              class="newsletter-form seva-form formkit-form"
-              data-nl-form="hero"
-              data-sv-form="9494875"
-              data-uid="143d695fcd"
-              data-format="inline"
-              data-version="5"
-              data-options='{"settings":{"after_subscribe":{"action":"redirect","success_message":"","redirect_url":"/confirm/"},"recaptcha":{"enabled":false}},"version":"5"}'
-              hidden>
-          <ul class="formkit-alert formkit-alert-error newsletter-alert" data-element="errors" data-group="alert"></ul>
-          <label class="sr-only" for="nl-email-hero">Email address</label>
-          <input id="nl-email-hero" name="email_address" class="newsletter-input formkit-input"
                  type="email" autocomplete="email" placeholder="you@yourstore.com" aria-label="Email address" required>
           <button type="submit" data-element="submit" class="btn btn-primary btn-block formkit-submit">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
@@ -766,7 +855,8 @@
   </div>
 
   <script src="js/nav.js"></script>
-  <script src="js/landing.js?v=3"></script>
+  <script src="js/landing.js?v=7"></script>
+  <script src="js/hero.js?v=6"></script>
   <!-- Kit (ConvertKit) — handles newsletter form AJAX submission -->
   <script async src="https://f.convertkit.com/ckjs/ck.5.js"></script>
   <!-- On a successful subscribe Kit shows its Creator Network

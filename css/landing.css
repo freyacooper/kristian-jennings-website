@@ -4,155 +4,120 @@
    ============================================================ */
 
 /* ============================================================
-   HERO — mobile-first, side-by-side from tablet up
+   HERO — pinned scroll-scrubbed video (see hero-video-spec).
+   .hero-pin is a tall wrapper whose height (set in px by js/hero.js,
+   this vh is just the pre-JS fallback) is the scroll distance that
+   drives the scrub; .hero sticks to the top of the viewport for that
+   whole distance and releases into normal scroll — natively, via
+   position:sticky — once the wrapper's height is exhausted. Progress
+   (0→1) across that same distance drives video.currentTime, the
+   headline rise-to-center, the scroll-cue fade-out, the video→static
+   swap, and the header solidify, all computed in js/hero.js.
    ============================================================ */
-.hero-stack {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto auto auto;
-  grid-template-areas:
-    "topText"
-    "bottom"
-    "photo";
-  row-gap: 22px;
-  padding: 56px 20px 24px;
-  align-items: stretch;
-  max-width: var(--max);
-  margin: 0 auto;
+.hero-pin {
+  position: relative;
+  height: 250vh;
 }
-
-.hero-text-top {
-  grid-area: topText;
+.hero {
+  position: sticky;
+  top: 0;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-}
-.hero-text-top .eyebrow { margin-bottom: 2px; }
-.hero-text-top h1.display { font-size: 32px; line-height: 1.2; }
-
-.hero-photo {
-  grid-area: photo;
-  position: relative;
-  width: 100%;
-  display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: flex-end;
-  min-height: 320px;
-  padding: 8px 0 0;
+  background: var(--ink);
+  padding: 0 20px;
+  overflow: hidden;
 }
-.hero-photo .backdrop {
+
+.hero-video,
+.hero-video-fallback {
   position: absolute;
   inset: 0;
-  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
 }
-.hero-photo .backdrop-circle {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -45%);
-  width: min(360px, 86%);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background:
-    radial-gradient(60% 60% at 50% 50%, var(--mist) 0%, rgba(215, 244, 242, 0) 70%),
-    radial-gradient(60% 60% at 70% 30%, var(--sand) 0%, rgba(242, 236, 233, 0) 65%);
-}
-.hero-photo img {
+.hero-video-fallback { opacity: 0; }
+
+.hero-headline {
   position: relative;
   z-index: 1;
-  height: 320px;
-  width: auto;
-  max-width: 92%;
-  object-fit: contain;
-  object-position: bottom center;
-  filter: drop-shadow(0 16px 28px rgba(1, 31, 47, 0.16));
+  color: var(--cream);
+  text-align: center;
+  max-width: 20ch;
+  font-size: 38px;
+  line-height: 1.2;
+  opacity: 0;
+  transform: translateY(120px);
+  will-change: opacity, transform;
+}
+/* Teal glow bloom behind the headline — driven by --glow-opacity /
+   --glow-scale (js/hero.js), 0 through the rise, ramping only once
+   the headline is fully in place and holding, right before release. */
+.hero-headline::before {
+  content: "";
+  position: absolute;
+  inset: -70% -30%;
+  z-index: -1;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(0, 208, 211, 0.65) 0%, rgba(0, 208, 211, 0) 70%);
+  filter: blur(50px);
+  opacity: var(--glow-opacity, 0);
+  transform: scale(var(--glow-scale, 0.8));
+  pointer-events: none;
 }
 
-.hero-text-bottom {
-  grid-area: bottom;
+.hero-scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 32px;
+  z-index: 1;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  align-items: center;
+  gap: 4px;
+  color: rgba(255, 252, 248, 0.68);
+  transition: opacity 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity;
 }
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+.hero-scroll-cue svg {
+  width: 18px;
+  height: 18px;
+  animation: hero-cue-bob 1.8s ease-in-out infinite;
+}
+.hero-scroll-cue span {
+  font-family: "Geist";
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+@keyframes hero-cue-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(5px); }
 }
 
-/* Tablet — two-column side-by-side */
 @media (min-width: 700px) {
-  .hero-stack {
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-    grid-template-rows: auto auto;
-    grid-template-areas:
-      "topText  photo"
-      "bottom   photo";
-    padding: 48px 48px 32px;
-    column-gap: 36px;
-    row-gap: 0;
-    align-items: stretch;
-  }
-  .hero-text-top {
-    align-self: end;
-    padding-top: 16px;
-  }
-  .hero-text-bottom {
-    padding-top: 18px;
-    padding-bottom: 24px;
-    align-self: start;
-  }
-  .hero-photo {
-    align-self: end;
-    min-height: 0;
-    height: 380px;
-    padding: 0;
-  }
-  .hero-photo img {
-    position: absolute;
-    bottom: 0;
-    height: 100%;
-    max-height: 420px;
-    max-width: 100%;
-  }
-  .hero-photo .backdrop-circle {
-    width: 110%;
-    max-width: 360px;
-    top: 50%;
-    bottom: auto;
-    transform: translate(-50%, -52%);
-  }
+  .hero-headline { font-size: 52px; max-width: 22ch; }
+}
+@media (min-width: 980px) {
+  .hero-headline { font-size: 64px; max-width: 24ch; }
 }
 
-/* Desktop — wider left column, taller photo, extra horizontal breathing room */
-@media (min-width: 980px) {
-  .hero-stack {
-    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-    max-width: 1040px;
-    padding: 56px 88px 32px;
-    column-gap: 0;
-  }
-  .hero-text-top {
-    padding-top: 24px;
-  }
-  .hero-text-bottom {
-    padding-bottom: 24px;
-    padding-top: 18px;
-  }
-  .hero-text-top h1.display {
-    font-size: 40px;
-    line-height: 1.3;
-    text-wrap: wrap;
-  }
-  .hero-photo {
-    height: 540px;
-  }
-  .hero-photo img {
-    max-height: 560px;
-  }
-  .hero-photo .backdrop-circle {
-    max-width: 540px;
-  }
+/* No forced-scroll pin for reduced-motion users — collapse the pin
+   distance to nothing, show the resting end-state immediately, and
+   skip the video entirely. !important since js/hero.js also sets an
+   inline height on .hero-pin; this must win over that regardless of
+   script timing. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-pin { height: 100vh !important; }
+  .hero-headline { opacity: 1; transform: none; transition: none; }
+  .hero-scroll-cue { display: none; }
+  .hero-video { opacity: 0; }
+  .hero-video-fallback { opacity: 1; }
 }
 
 /* Tools / Resources index pages — reuse the .tools-grid cards under a
@@ -171,11 +136,20 @@
    ============================================================ */
 .tools {
   position: relative;
-  padding: 46px 20px 64px;
+  padding: 46px 20px 32px;
   background: var(--cream);
   border-radius: 28px 28px 0 0;
   margin-top: -24px;
   box-shadow: 0 -12px 32px -16px rgba(1, 31, 47, 0.18);
+  z-index: 2;
+}
+/* Resources continues the same cream pedestal right after Tools — no
+   overlap/rounding needed between them since it's the same flat
+   colour, just normal vertical rhythm. */
+.resources {
+  position: relative;
+  padding: 16px 20px 64px;
+  background: var(--cream);
   z-index: 2;
 }
 .tools-inner {
@@ -186,33 +160,83 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 28px;
-  max-width: 36ch;
+  margin-bottom: 20px;
   position: relative;
   z-index: 1;
+}
+.tools-head-text {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 36ch;
 }
 .tools-head h2 { margin: 4px 0 0; }
-.tools-head .lead { font-size: 14px; margin-top: 6px; }
+.carousel-nav { display: none; }
 
-.tools-grid {
+/* ---------- carousel ---------- */
+.tools-carousel {
   position: relative;
   z-index: 1;
-  display: grid;
+  display: flex;
   gap: 16px;
-  grid-template-columns: 1fr;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  /* overflow-x:auto forces overflow-y to compute as auto too (even
+     though we never want vertical scrolling), and the scrollable
+     content's own edges clip the first/last card's shadow — in both
+     cases the cards' drop shadow and hover lift get clipped at the
+     container edge. Pad the track generously on every side and pull
+     it back with an equal negative margin so there's room for the
+     shadow to render without changing the section's actual layout
+     size (horizontal padding stays within each breakpoint's own
+     section padding below, so this never bleeds past the section's
+     true edge into a page-level horizontal scrollbar). */
+  padding: 20px 20px 56px;
+  margin: -20px -20px -56px;
 }
+.tools-carousel::-webkit-scrollbar { display: none; }
+
+.carousel-btn {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--soft);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.carousel-btn svg { width: 16px; height: 16px; }
+.carousel-btn:hover {
+  background: var(--mist);
+  border-color: rgba(0, 157, 159, 0.4);
+  color: var(--accent-deep);
+}
+.carousel-btn:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
 
 .tool-card {
   position: relative;
   display: flex;
   flex-direction: column;
+  flex: 0 0 230px;
+  scroll-snap-align: start;
   text-decoration: none;
   color: inherit;
   background: rgba(255, 255, 255, 0.52);
   backdrop-filter: blur(28px) saturate(160%);
   -webkit-backdrop-filter: blur(28px) saturate(160%);
   border: 1px solid rgba(255, 255, 255, 0.72);
-  border-radius: 24px;
+  border-radius: 20px;
   overflow: hidden;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.92),
@@ -239,7 +263,7 @@
 
 .tool-visual {
   position: relative;
-  height: 200px;
+  height: 120px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -254,6 +278,21 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+}
+/* The mockup graphics (not the gradient background/glow) were
+   designed for a much bigger box — scale just the graphic down
+   uniformly rather than re-tuning every nested element's sizing
+   across all 7 card variants. Scaling .tv itself would shrink the
+   gradient background with it, leaving unfilled edges — this way the
+   gradient still fills the full card-top edge to edge. */
+.imsg-screen,
+.imsg-inbox-screen,
+.ig-dm-screen,
+.ig-inbox-screen,
+.roas-card,
+.sfx-stack,
+.icon-lib-card {
+  transform: scale(0.68);
 }
 .tv-sfx  { background: linear-gradient(155deg, #d7f4f2 0%, #b8e8e6 60%, #cfe8df 100%); }
 .tv-imsg { background: linear-gradient(170deg, #eaf2f0 0%, #d7f4f2 50%, #f2ece9 100%); }
@@ -756,58 +795,63 @@
 
 /* Card body */
 .tool-body {
-  padding: 20px 22px 22px;
+  padding: 14px 15px 16px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 5px;
 }
 .tool-tag {
   font-family: "Geist";
   font-weight: 500;
-  font-size: 10.5px;
-  letter-spacing: 0.14em;
+  font-size: 9px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent-deep);
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
 }
 .tool-tag::before {
   content: "";
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: var(--accent);
 }
 .tool-body h3 {
   font-family: "Sora";
   font-weight: 700;
-  font-size: 19px;
-  letter-spacing: -0.015em;
+  font-size: 15px;
+  letter-spacing: -0.01em;
   line-height: 1.2;
-  margin: 2px 0 0;
+  margin: 1px 0 0;
   color: var(--ink);
 }
 .tool-body .body-sm {
-  font-size: 13.5px;
+  font-size: 11.5px;
+  line-height: 1.4;
   margin: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 .tool-cta {
   appearance: none;
   font-family: "Geist";
   font-weight: 500;
-  font-size: 14px;
+  font-size: 12px;
   color: var(--accent-deep);
   background: transparent;
   border: 1px solid var(--soft);
   cursor: pointer;
-  padding: 11px 18px;
+  padding: 7px 13px;
   border-radius: 999px;
   align-self: flex-start;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 14px;
+  gap: 6px;
+  margin-top: 8px;
   transition:
     border-color 240ms cubic-bezier(0.16, 1, 0.3, 1),
     background 240ms cubic-bezier(0.16, 1, 0.3, 1),
@@ -829,30 +873,219 @@
   .tools {
     border-radius: 36px 36px 0 0;
     margin-top: -32px;
-    padding: 88px 48px 88px;
+    padding: 88px 48px 40px;
   }
-  .tools-head { margin-bottom: 36px; max-width: 44ch; }
-  .tools-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+  .resources { padding: 24px 48px 88px; }
+  .tools-head {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .tools-head-text { max-width: 44ch; }
+  .carousel-nav { display: flex; gap: 8px; flex-shrink: 0; }
+  .tools-carousel {
+    padding-left: 44px;
+    padding-right: 44px;
+    margin-left: -44px;
+    margin-right: -44px;
+  }
+  .tool-card { flex-basis: 270px; }
+  .tool-visual { height: 140px; }
+  .imsg-screen,
+  .imsg-inbox-screen,
+  .ig-dm-screen,
+  .ig-inbox-screen,
+  .roas-card,
+  .sfx-stack,
+  .icon-lib-card {
+    transform: scale(0.74);
   }
 }
 @media (min-width: 980px) {
-  .tools { padding: 104px 116px 104px; }
-  .tool-visual { height: 240px; }
-  .tool-body { padding: 26px 28px 28px; }
-  .tool-body h3 { font-size: 22px; }
-  .tool-body .body-sm { font-size: 14.5px; }
+  .tools { padding: 104px 116px 56px; }
+  .resources { padding: 32px 116px 104px; }
+  .tool-card { flex-basis: 320px; }
+  .tool-visual { height: 165px; }
+  .tool-body { padding: 20px 22px 22px; }
+  .tool-body h3 { font-size: 18px; }
+  .tool-body .body-sm { font-size: 12.5px; }
+  .imsg-screen,
+  .imsg-inbox-screen,
+  .ig-dm-screen,
+  .ig-inbox-screen,
+  .roas-card,
+  .sfx-stack,
+  .icon-lib-card {
+    transform: scale(0.86);
+  }
 }
 
 /* ============================================================
-   NEWSLETTER — ink card with accent halo
+   BIO — full-bleed dark photo, text over a left-to-right scrim so it
+   stays legible regardless of exactly how "cover" crops the photo at
+   a given viewport size.
+   ============================================================ */
+.bio {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 480px;
+  padding: 48px 32px;
+  background-image:
+    linear-gradient(90deg,
+      rgba(1, 31, 47, 0.88) 0%,
+      rgba(1, 31, 47, 0.62) 32%,
+      rgba(1, 31, 47, 0.22) 58%,
+      rgba(1, 31, 47, 0) 82%),
+    url("../assets/images/kristian-working2.png");
+  background-size: cover, cover;
+  background-position: center, center 38%;
+  background-repeat: no-repeat, no-repeat;
+}
+.bio-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 44ch;
+}
+/* Eyebrow sits on the dark photo, not the site's light background —
+   reuse the newsletter card's dark-mode override (bright teal instead
+   of the deep teal used on light sections, for contrast). */
+.bio-content .eyebrow { color: var(--accent); margin-bottom: 2px; }
+.bio-content .eyebrow::before { background: var(--accent); opacity: 0.7; }
+.bio-greeting {
+  color: var(--cream);
+  font-size: 26px;
+  margin: 10px 0 12px;
+}
+.bio-copy {
+  color: rgba(255, 252, 248, 0.82);
+  font-size: 14.5px;
+  line-height: 1.65;
+  margin: 0;
+  max-width: 36ch;
+  text-wrap: pretty;
+}
+.bio-handle {
+  color: var(--cream);
+  font-weight: 600;
+}
+
+/* Transparent outline CTA — low-opacity white fill + lift + drop
+   shadow on hover, arrow nudges forward with the same overshoot
+   easing used for icon-translate hovers elsewhere on the site
+   (nav-dd-glyph, tool-cta, back-link). */
+.bio-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  padding: 13px 22px;
+  border-radius: 999px;
+  font-family: "Geist";
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--cream);
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid rgba(255, 252, 248, 0.55);
+  cursor: pointer;
+  transition:
+    background 280ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 280ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.bio-cta svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.bio-cta:hover {
+  background: rgba(255, 252, 248, 0.14);
+  border-color: rgba(255, 252, 248, 0.85);
+  box-shadow: 0 14px 32px -14px rgba(0, 0, 0, 0.55);
+  transform: translateY(-2px);
+}
+.bio-cta:hover svg { transform: translateX(4px); }
+.bio-cta:active { transform: translateY(0); transition-duration: 100ms; }
+
+@media (min-width: 700px) {
+  .bio { min-height: 580px; padding: 56px 72px; }
+  .bio-greeting { font-size: 32px; }
+  .bio-copy { font-size: 15.5px; }
+}
+@media (min-width: 980px) {
+  .bio { min-height: 660px; padding: 64px 120px; }
+  .bio-greeting { font-size: 36px; }
+  .bio-copy { font-size: 16px; }
+}
+
+/* ============================================================
+   NEWSLETTER — full-bleed light glass pedestal, same rounded-top
+   overlap language as .tools onto the hero. Rides up over the bio
+   section on scroll (js/landing.js drives the extra parallax
+   translateY on top of the static overlap margin below); the glass
+   backdrop-filter blurs the bio photo through it as it overlaps.
+   .newsletter-card (the dark ink card) now belongs to the modal only
+   — the inline section's content lives in .newsletter-content instead,
+   so the two can carry different themes without colliding.
    ============================================================ */
 .newsletter {
-  padding: 32px 20px 48px;
+  position: relative;
+  margin-top: -16px;
+  margin-bottom: 40px;
+  padding: 56px 24px 64px;
+  border-radius: 28px;
+  /* Same layered treatment as the ROAS Calculator result cards: dark
+     wash over the gradient photo for text contrast, teal-900 fallback
+     if the image fails to load. */
+  background-color: var(--teal-900);
+  background-image:
+    linear-gradient(rgba(1, 31, 47, 0.5), rgba(1, 31, 47, 0.5)),
+    url("../assets/images/dark-gradient.webp");
+  background-size: auto, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 30px 70px -24px rgba(1, 31, 47, 0.6),
+    0 -16px 40px -22px rgba(1, 31, 47, 0.4);
+  z-index: 3;
+  will-change: transform;
+}
+.newsletter-content {
+  position: relative;
+  z-index: 1;
   max-width: var(--max);
   margin: 0 auto;
+  text-align: center;
 }
+.newsletter-content .eyebrow { color: var(--accent); }
+.newsletter-content .eyebrow::before { background: var(--accent); opacity: 0.7; }
+.newsletter-content h2 {
+  color: var(--cream);
+  margin: 14px 0 28px;
+  font-size: clamp(32px, 5.5vw, 52px);
+}
+.newsletter-content .lead {
+  color: rgba(255, 252, 248, 0.72);
+  margin: 0 auto 24px;
+}
+
+.newsletter-content .newsletter-form {
+  max-width: 460px;
+  margin: 0 auto;
+}
+.newsletter-content .newsletter-input { text-align: left; }
+.newsletter-content .newsletter-form .btn-primary { padding-left: 34px; padding-right: 34px; }
+.newsletter-content .newsletter-fine { justify-content: center; }
+
 .newsletter-card {
   background: var(--ink);
   color: var(--cream);
@@ -992,10 +1225,11 @@
 }
 
 @media (min-width: 700px) {
-  .newsletter { padding: 48px 48px 72px; }
+  .newsletter { border-radius: 36px; margin-top: -20px; margin-bottom: 56px; padding: 72px 64px 80px; }
   .newsletter-card { padding: 44px 44px; }
   .newsletter-card h2 { font-size: 30px; }
   .newsletter-card .lead { font-size: 15.5px; }
+  .newsletter-content .lead { font-size: 15.5px; }
   .newsletter-input { font-size: 15px; padding: 16px 18px; }
   .newsletter-form {
     display: grid;
@@ -1008,7 +1242,98 @@
   .newsletter-form .newsletter-success { grid-column: 1 / -1; }
 }
 @media (min-width: 980px) {
-  .newsletter { padding: 48px 72px 72px; }
+  .newsletter { padding: 88px 100px 96px; }
+}
+
+/* ============================================================
+   PLATFORMS — plain section on the site's normal background (no
+   pedestal/photo treatment), 3 columns stacking to 1 on mobile.
+   ============================================================ */
+.platforms {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 48px 20px;
+}
+.platforms-head {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 32px;
+  max-width: 46ch;
+}
+.platforms-head h2 { margin: 4px 0 0; }
+
+.platforms-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+.platform-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.platform-banner {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 6px;
+  box-shadow:
+    0 20px 40px -24px rgba(1, 31, 47, 0.28),
+    0 6px 16px -10px rgba(1, 31, 47, 0.12);
+}
+.platform-card h3 { margin: 0; }
+.platform-card .body-sm { margin: 0; }
+
+/* Same pill-outline recipe as .tool-cta, but with its own hover state
+   since these links aren't nested inside a bigger hoverable card. */
+.platform-cta {
+  appearance: none;
+  font-family: "Geist";
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--accent-deep);
+  background: transparent;
+  border: 1px solid var(--soft);
+  cursor: pointer;
+  padding: 11px 18px;
+  border-radius: 999px;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  text-decoration: none;
+  transition:
+    border-color 240ms cubic-bezier(0.16, 1, 0.3, 1),
+    background 240ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.platform-cta svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.platform-cta:hover {
+  border-color: rgba(0, 157, 159, 0.4);
+  background: var(--mist);
+  color: var(--accent-deep);
+}
+.platform-cta:hover svg { transform: translateX(4px); }
+
+@media (min-width: 700px) {
+  .platforms { padding: 72px 48px; }
+  .platforms-grid {
+    grid-template-columns: repeat(3, minmax(0, 240px));
+    justify-content: space-between;
+    gap: 28px;
+  }
+}
+@media (min-width: 980px) {
+  .platforms { padding: 88px 72px; }
+  .platforms-grid { grid-template-columns: repeat(3, minmax(0, 280px)); }
 }
 
 /* ============================================================

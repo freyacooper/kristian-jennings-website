@@ -260,7 +260,7 @@
   background-color: var(--teal-900);
   background-image:
     linear-gradient(rgba(1, 31, 47, 0.18), rgba(1, 31, 47, 0.18)),
-    url("/assets/images/dark-gradient.png");
+    url("/assets/images/dark-gradient.webp");
   background-size: auto, cover;
   background-repeat: no-repeat, no-repeat;
   color: var(--cream);

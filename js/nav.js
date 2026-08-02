@@ -64,6 +64,9 @@
       label: "Tools",
       links: [
         { name: "iMessage Screenshot Maker", href: "/tools/imessage-screenshot-maker/" },
+        { name: "iMessage Inbox", href: "/tools/imessage-inbox/" },
+        { name: "Instagram DM Creator", href: "/tools/instagram-dm-creator/" },
+        { name: "Instagram Inbox", href: "/tools/instagram-inbox/" },
         { name: "ROAS Calculator", href: "/tools/roas-calculator/" }
       ]
     },
@@ -154,6 +157,7 @@
           '<span>Resources</span>' +
           '<span class="nav-sheet-arrow">' + ICON_ARROW + '</span>' +
         '</button>' +
+        '<a href="/my-story/" data-sheet-link><span>My Story</span></a>' +
       '</nav>';
     bindSheetEvents();
   };

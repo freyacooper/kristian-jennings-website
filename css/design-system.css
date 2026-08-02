@@ -233,6 +233,7 @@ h4 { font-size: 15px; letter-spacing: -0.01em; line-height: 1.25; }
   backdrop-filter: blur(14px);
 }
 .nav-brand {
+  position: relative;
   display: inline-flex;
   align-items: center;
   text-decoration: none;
@@ -242,6 +243,15 @@ h4 { font-size: 15px; letter-spacing: -0.01em; line-height: 1.25; }
   height: 34px;
   width: auto;
   display: block;
+}
+/* Only present on the hero page (two logos stacked for the light/dark
+   crossfade below) — the dark logo stays in normal flow so .nav-brand
+   sizes itself off it; the light one sits on top, absolutely
+   positioned to match. Every other page just has a single .nav-logo
+   and never sees this rule. */
+.nav-logo-light {
+  position: absolute;
+  inset: 0;
 }
 @media (min-width: 980px) {
   .nav-logo { height: 42px; }
@@ -292,6 +302,27 @@ h4 { font-size: 15px; letter-spacing: -0.01em; line-height: 1.25; }
 .nav-dd-trigger:hover .nav-dd-caret,
 .nav-dd[data-open="1"] .nav-dd-caret { color: var(--accent-deep); }
 .nav-dd[data-open="1"] .nav-dd-caret { transform: rotate(180deg); }
+
+/* Plain nav link (no dropdown) — same pill treatment as the dropdown
+   triggers, for single-page nav items like "My Story". */
+.nav-link {
+  font-family: "Geist";
+  font-size: 14px;
+  color: var(--ink);
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition:
+    color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    background 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nav-link:hover {
+  color: var(--accent-deep);
+  background: rgba(0, 208, 211, 0.1);
+}
 
 .nav-dd-panel {
   position: absolute;
@@ -397,6 +428,72 @@ h4 { font-size: 15px; letter-spacing: -0.01em; line-height: 1.25; }
   align-items: center;
   gap: 8px;
   margin-left: auto;
+}
+
+/* ---------- transparent-over-hero state (landing page only) ----------
+   Pages with a hero (body.has-hero) start with the nav fully see-through
+   over the dark hero, then solidify once js/hero.js adds .is-solid —
+   driven by the same scroll-progress value that reveals the hero
+   headline. Pages without .has-hero are untouched. */
+body.has-hero .nav::before { opacity: 0; }
+body.has-hero .nav.is-solid::before {
+  opacity: 1;
+  transition: opacity 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.has-hero .nav:not(.is-solid) .nav-brand,
+body.has-hero .nav:not(.is-solid) .nav-dd-trigger,
+body.has-hero .nav:not(.is-solid) .nav-dd-caret,
+body.has-hero .nav:not(.is-solid) .nav-link,
+body.has-hero .nav:not(.is-solid) .nav-burger {
+  color: var(--cream);
+}
+body.has-hero .nav:not(.is-solid) .nav-burger {
+  background: rgba(255, 252, 248, 0.1);
+}
+body.has-hero .nav:not(.is-solid) .nav-burger:hover {
+  background: rgba(255, 252, 248, 0.18);
+}
+body.has-hero .nav:not(.is-solid) .nav-dd-trigger:hover,
+body.has-hero .nav:not(.is-solid) .nav-dd[data-open="1"] .nav-dd-trigger,
+body.has-hero .nav:not(.is-solid) .nav-link:hover {
+  color: var(--cream);
+  background: rgba(255, 252, 248, 0.14);
+}
+/* Real light/dark logo crossfade — dark logo hidden and light logo
+   shown while transparent, swapped once solid. */
+body.has-hero .nav-logo-dark { opacity: 0; }
+body.has-hero .nav-logo-light { opacity: 1; }
+body.has-hero .nav.is-solid .nav-logo-dark { opacity: 1; }
+body.has-hero .nav.is-solid .nav-logo-light { opacity: 0; }
+body.has-hero .nav-logo-dark,
+body.has-hero .nav-logo-light {
+  transition: opacity 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+/* Subscribe button goes minimalist (outline) over the transparent
+   hero — a filled teal pill fights with a see-through header. Reverts
+   to the normal filled btn-primary look once solid (transitions come
+   from .btn's existing background/border-color/box-shadow rules). */
+body.has-hero .nav:not(.is-solid) .nav-subscribe {
+  background: transparent;
+  color: var(--cream);
+  border: 1px solid rgba(255, 252, 248, 0.7);
+  box-shadow: none;
+}
+body.has-hero .nav:not(.is-solid) .nav-subscribe:hover {
+  background: rgba(255, 252, 248, 0.14);
+  border-color: rgba(255, 252, 248, 0.9);
+  filter: none;
+  box-shadow: none;
+}
+body.has-hero .nav.is-solid .nav-brand,
+body.has-hero .nav.is-solid .nav-dd-trigger,
+body.has-hero .nav.is-solid .nav-dd-caret,
+body.has-hero .nav.is-solid .nav-link,
+body.has-hero .nav.is-solid .nav-burger {
+  transition:
+    color 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    background 320ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .nav-subscribe { padding: 10px 16px; font-size: 13.5px; }
 .nav .btn svg { width: 14px; height: 14px; }
@@ -658,7 +755,7 @@ h4 { font-size: 15px; letter-spacing: -0.01em; line-height: 1.25; }
 @media (min-width: 700px) {
   .footer-inner { padding: 44px 48px 32px; }
   .footer-grid {
-    grid-template-columns: 1.5fr 1fr 1fr;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
     gap: 40px;
     align-items: start;
   }

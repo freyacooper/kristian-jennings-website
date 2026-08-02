@@ -93,4 +93,68 @@
       if (e.key === "Escape" && !modal.hidden) closeModal();
     });
   }
+
+  /* ---------- Newsletter parallax overlap ---------- */
+  // On top of the static overlap margin in CSS, the section rides up
+  // an extra bit further as it scrolls into view, deepening the
+  // overlap onto the bio section above it — same rAF-throttled
+  // scroll-progress pattern as js/hero.js. No CSS transition on the
+  // transform itself: it's driven every frame from scroll position,
+  // so it should track the scroll 1:1 rather than lag behind it.
+  var newsletterSection = document.querySelector(".newsletter");
+  if (newsletterSection && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var NL_MAX_SHIFT = 32;
+    var nlTicking = false;
+
+    function updateNewsletterParallax() {
+      nlTicking = false;
+      var rect = newsletterSection.getBoundingClientRect();
+      var vh = window.innerHeight;
+      var raw = (vh - rect.top) / (vh * 0.6);
+      var progress = Math.max(0, Math.min(1, raw));
+      newsletterSection.style.transform = "translateY(" + (-NL_MAX_SHIFT * progress) + "px)";
+    }
+
+    window.addEventListener("scroll", function () {
+      if (!nlTicking) {
+        nlTicking = true;
+        window.requestAnimationFrame(updateNewsletterParallax);
+      }
+    }, { passive: true });
+    window.addEventListener("resize", updateNewsletterParallax);
+    updateNewsletterParallax();
+  }
+
+  /* ---------- Tools / Resources carousels ---------- */
+  // Each .tools-head is immediately followed by its [data-carousel]
+  // track; prev/next buttons scroll by one card-width at a time and
+  // disable themselves at either end. Native scroll-snap handles fine
+  // alignment (and touch swipe) — the buttons are the mouse/keyboard
+  // affordance on non-touch devices.
+  document.querySelectorAll(".tools-head").forEach(function (head) {
+    var carousel = head.nextElementSibling;
+    if (!carousel || !carousel.hasAttribute("data-carousel")) return;
+    var prevBtn = head.querySelector("[data-carousel-prev]");
+    var nextBtn = head.querySelector("[data-carousel-next]");
+    if (!prevBtn || !nextBtn) return;
+
+    function updateButtons() {
+      var max = carousel.scrollWidth - carousel.clientWidth - 1;
+      prevBtn.disabled = carousel.scrollLeft <= 0;
+      nextBtn.disabled = carousel.scrollLeft >= max;
+    }
+
+    function scrollByCard(dir) {
+      var card = carousel.querySelector(".tool-card");
+      var gap = 16;
+      var amount = card ? card.getBoundingClientRect().width + gap : 240;
+      carousel.scrollBy({ left: dir * amount, behavior: "smooth" });
+    }
+
+    prevBtn.addEventListener("click", function () { scrollByCard(-1); });
+    nextBtn.addEventListener("click", function () { scrollByCard(1); });
+    carousel.addEventListener("scroll", updateButtons, { passive: true });
+    window.addEventListener("resize", updateButtons);
+    updateButtons();
+  });
 })();
