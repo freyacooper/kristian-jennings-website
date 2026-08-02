@@ -1,0 +1,19 @@
+# Tells `wrangler deploy` which files under assets.directory (".") to
+# exclude from the deployed site — same idea as .gitignore, but for
+# the Workers assets upload rather than git. Without this, Wrangler
+# scans the entire repo (including .git internals), which is both
+# wasteful and can fail outright if a git pack file exceeds the
+# platform's 25 MiB per-asset limit.
+.git
+.gitignore
+.github
+node_modules
+wrangler.jsonc
+
+# Mini-app source (React/Vite) for the embedded tools — already built
+# and copied into tools/*/app/, which is what's actually served.
+_apps
+
+# OS/editor cruft
+.DS_Store
+._*
